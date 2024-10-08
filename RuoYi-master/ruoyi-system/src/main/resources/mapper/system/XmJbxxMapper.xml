@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.XmJbxxMapper">
+    
+    <resultMap type="XmJbxx" id="XmJbxxResult">
+        <result property="sid"    column="sid"    />
+        <result property="xmmc"    column="xmmc"    />
+        <result property="ssdw"    column="ssdw"    />
+        <result property="lxsj"    column="lxsj"    />
+        <result property="fzr"    column="fzr"    />
+        <result property="ip1"    column="ip1"    />
+        <result property="qtry"    column="qtry"    />
+        <result property="userid"    column="userid"    />
+    </resultMap>
+
+    <sql id="selectXmJbxxVo">
+        select sid, xmmc, ssdw, lxsj, fzr, ip1, qtry,userid from xm_jbxx
+    </sql>
+
+    <select id="selectXmJbxxList" parameterType="XmJbxx" resultMap="XmJbxxResult">
+        <include refid="selectXmJbxxVo"/>
+        <where>  
+            <if test="xmmc != null  and xmmc != ''"> and xmmc = #{xmmc}</if>
+            <if test="ssdw != null  and ssdw != ''"> and ssdw like concat('%', #{ssdw}, '%')</if>
+            <if test="lxsj != null "> and lxsj = #{lxsj}</if>
+            <if test="fzr != null  and fzr != ''"> and fzr = #{fzr}</if>
+            <if test="ip1 != null  and ip1 != ''"> and ip1 = #{ip1}</if>
+            <if test="qtry != null  and qtry != ''"> and qtry = #{qtry}</if>
+            <if test="userid != null  and userid != ''"> and userid = #{userid}</if>
+        </where>
+    </select>
+    
+    <select id="selectXmJbxxBySid" parameterType="String" resultMap="XmJbxxResult">
+        <include refid="selectXmJbxxVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertXmJbxx" parameterType="XmJbxx">
+        insert into xm_jbxx
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="xmmc != null">xmmc,</if>
+            <if test="ssdw != null">ssdw,</if>
+            <if test="lxsj != null">lxsj,</if>
+            <if test="fzr != null">fzr,</if>
+            <if test="ip1 != null">ip1,</if>
+            <if test="qtry != null">qtry,</if>
+            <if test="userid != null">userid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="xmmc != null">#{xmmc},</if>
+            <if test="ssdw != null">#{ssdw},</if>
+            <if test="lxsj != null">#{lxsj},</if>
+            <if test="fzr != null">#{fzr},</if>
+            <if test="ip1 != null">#{ip1},</if>
+            <if test="qtry != null">#{qtry},</if>
+            <if test="userid != null">#{userid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXmJbxx" parameterType="XmJbxx">
+        update xm_jbxx
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xmmc != null">xmmc = #{xmmc},</if>
+            <if test="ssdw != null">ssdw = #{ssdw},</if>
+            <if test="lxsj != null">lxsj = #{lxsj},</if>
+            <if test="fzr != null">fzr = #{fzr},</if>
+            <if test="ip1 != null">ip1 = #{ip1},</if>
+            <if test="qtry != null">qtry = #{qtry},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteXmJbxxBySid" parameterType="String">
+        delete from xm_jbxx where sid = #{sid}
+    </delete>
+
+    <delete id="deleteXmJbxxBySids" parameterType="String">
+        delete from xm_jbxx where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

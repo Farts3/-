@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('验收记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>维修记录id：</label>
+                                <input type="text" name="wxid"/>
+                            </li>
+                            <li>
+                                <label>是否通过验收：</label>
+                                <input type="text" name="ifys"/>
+                            </li>
+                            <li>
+                                <label>验收人：</label>
+                                <input type="text" name="ysr"/>
+                            </li>
+                            <li>
+                                <label>验收时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择验收时间" name="yssj"/>
+                            </li>
+                            <li>
+                                <label>联系电话：</label>
+                                <input type="text" name="lxdh"/>
+                            </li>
+                            <li>
+                                <label>填表人：</label>
+                                <input type="text" name="tbr"/>
+                            </li>
+                            <li>
+                                <label>填表时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择填表时间" name="tbsj"/>
+                            </li>
+                            <li>
+                                <label>预留1：</label>
+                                <input type="text" name="yu1"/>
+                            </li>
+                            <li>
+                                <label>预留2：</label>
+                                <input type="text" name="yu2"/>
+                            </li>
+                            <li>
+                                <label>预留3：</label>
+                                <input type="text" name="yu3"/>
+                            </li>
+                            <li>
+                                <label>预留4：</label>
+                                <input type="text" name="yu4"/>
+                            </li>
+                            <li>
+                                <label>预留5：</label>
+                                <input type="text" name="yu5"/>
+                            </li>
+                            <li>
+                                <label>预留6：</label>
+                                <input type="text" name="yu6"/>
+                            </li>
+                            <li>
+                                <label>预留7：</label>
+                                <input type="text" name="yu7"/>
+                            </li>
+                            <li>
+                                <label>预留8：</label>
+                                <input type="text" name="yu8"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" >
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" >
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" >
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" >
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:ysjlbxx:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:ysjlbxx:remove')}]];
+        var prefix = ctx + "system/ysjlbxx";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "验收记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'sid',
+                    title: 'sid',
+                    visible: false
+                },
+                {
+                    field: 'wxid',
+                    title: '维修记录id'
+                },
+                {
+                    field: 'ifys',
+                    title: '是否通过验收'
+                },
+                {
+                    field: 'ysr',
+                    title: '验收人'
+                },
+                {
+                    field: 'yssj',
+                    title: '验收时间'
+                },
+                {
+                    field: 'lxdh',
+                    title: '联系电话'
+                },
+                {
+                    field: 'tbr',
+                    title: '填表人'
+                },
+                {
+                    field: 'tbsj',
+                    title: '填表时间'
+                },
+                {
+                    field: 'yu1',
+                    title: '预留1'
+                },
+                {
+                    field: 'yu2',
+                    title: '预留2'
+                },
+                {
+                    field: 'yu3',
+                    title: '预留3'
+                },
+                {
+                    field: 'yu4',
+                    title: '预留4'
+                },
+                {
+                    field: 'yu5',
+                    title: '预留5'
+                },
+                {
+                    field: 'yu6',
+                    title: '预留6'
+                },
+                {
+                    field: 'yu7',
+                    title: '预留7'
+                },
+                {
+                    field: 'yu8',
+                    title: '预留8'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sid + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('二维码')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<style>
+    @media print {
+        .fixed-table-toolbar {
+            display: none;
+        }
+
+        .noprint {
+            display: none;
+        }
+
+        .fixed-table-pagination {
+            display: none !important;
+        }
+
+    }
+    @page {
+        size: auto;
+        margin: 0mm;
+    }
+</style>
+<body class="white-bg">
+<a class="btn btn-success" id="prints" onclick="printHtml();" shiro:hasPermission="xxxx:xxxx:print">
+    <i class="glyphicon glyphicon-print icon-share"></i> 打印
+</a>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content" id="bootstrap-table" STYLE="text-align: center;">
+<img th:src="(${#strings.isEmpty(url)}) ? @{/img/profile.jpg} : @{${url}}"  class="img" alt="SB Image">
+</div>
+<script>
+    // 自定义打印页面模板
+    function printHtml() {
+        window.print();
+    }
+</script>
+</body>
+</html>
+

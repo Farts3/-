@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.YwPdjlMapper">
+    
+    <resultMap type="YwPdjl" id="YwPdjlResult">
+        <result property="sid"    column="sid"    />
+        <result property="bxjlid"    column="bxjlid"    />
+        <result property="pqsj"    column="pqsj"    />
+        <result property="pqry"    column="pqry"    />
+        <result property="lxdh"    column="lxdh"    />
+        <result property="tbsj"    column="tbsj"    />
+        <result property="tbr"    column="tbr"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu6"    column="yu6"    />
+        <result property="yu7"    column="yu7"    />
+        <result property="yu8"    column="yu8"    />
+    </resultMap>
+
+    <sql id="selectYwPdjlVo">
+        select sid, bxjlid, pqsj, pqry, lxdh, tbsj, tbr, yu1, yu2, yu3, yu4, yu5, yu6, yu7, yu8 from yw_pdjl
+    </sql>
+
+    <select id="selectYwPdjlList" parameterType="YwPdjl" resultMap="YwPdjlResult">
+        <include refid="selectYwPdjlVo"/>
+        <where>  
+            <if test="bxjlid != null  and bxjlid != ''"> and bxjlid = #{bxjlid}</if>
+            <if test="pqsj != null "> and pqsj = #{pqsj}</if>
+            <if test="pqry != null  and pqry != ''"> and pqry = #{pqry}</if>
+            <if test="lxdh != null  and lxdh != ''"> and lxdh = #{lxdh}</if>
+            <if test="tbsj != null "> and tbsj = #{tbsj}</if>
+            <if test="tbr != null  and tbr != ''"> and tbr = #{tbr}</if>
+            <if test="yu1 != null  and yu1 != ''"> and yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and yu2 = #{yu2}</if>
+            <if test="yu3 != null  and yu3 != ''"> and yu3 = #{yu3}</if>
+            <if test="yu4 != null  and yu4 != ''"> and yu4 = #{yu4}</if>
+            <if test="yu5 != null  and yu5 != ''"> and yu5 = #{yu5}</if>
+            <if test="yu6 != null  and yu6 != ''"> and yu6 = #{yu6}</if>
+            <if test="yu7 != null  and yu7 != ''"> and yu7 = #{yu7}</if>
+            <if test="yu8 != null  and yu8 != ''"> and yu8 = #{yu8}</if>
+        </where>
+    </select>
+    
+    <select id="selectYwPdjlBySid" parameterType="String" resultMap="YwPdjlResult">
+        <include refid="selectYwPdjlVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertYwPdjl" parameterType="YwPdjl">
+        insert into yw_pdjl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="bxjlid != null">bxjlid,</if>
+            <if test="pqsj != null">pqsj,</if>
+            <if test="pqry != null">pqry,</if>
+            <if test="lxdh != null">lxdh,</if>
+            <if test="tbsj != null">tbsj,</if>
+            <if test="tbr != null">tbr,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu6 != null">yu6,</if>
+            <if test="yu7 != null">yu7,</if>
+            <if test="yu8 != null">yu8,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="bxjlid != null">#{bxjlid},</if>
+            <if test="pqsj != null">#{pqsj},</if>
+            <if test="pqry != null">#{pqry},</if>
+            <if test="lxdh != null">#{lxdh},</if>
+            <if test="tbsj != null">#{tbsj},</if>
+            <if test="tbr != null">#{tbr},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu6 != null">#{yu6},</if>
+            <if test="yu7 != null">#{yu7},</if>
+            <if test="yu8 != null">#{yu8},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwPdjl" parameterType="YwPdjl">
+        update yw_pdjl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bxjlid != null">bxjlid = #{bxjlid},</if>
+            <if test="pqsj != null">pqsj = #{pqsj},</if>
+            <if test="pqry != null">pqry = #{pqry},</if>
+            <if test="lxdh != null">lxdh = #{lxdh},</if>
+            <if test="tbsj != null">tbsj = #{tbsj},</if>
+            <if test="tbr != null">tbr = #{tbr},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu6 != null">yu6 = #{yu6},</if>
+            <if test="yu7 != null">yu7 = #{yu7},</if>
+            <if test="yu8 != null">yu8 = #{yu8},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteYwPdjlBySid" parameterType="String">
+        delete from yw_pdjl where sid = #{sid}
+    </delete>
+
+    <delete id="deleteYwPdjlBySids" parameterType="String">
+        delete from yw_pdjl where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

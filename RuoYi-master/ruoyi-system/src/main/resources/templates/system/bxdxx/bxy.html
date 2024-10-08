@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('添加报修单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-bxdxx-edit" th:object="${ywBxjl}">
+            <input name="sid" th:field="*{sid}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修单位：</label>
+                <div class="col-sm-8">
+                    <input name="bxDw" id="bxDw" th:field="*{bxDw}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修部门：</label>
+                <div class="col-sm-8">
+                    <input name="bxBm" th:field="*{bxBm}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障类型：</label>
+                <div class="col-sm-8">
+                    <input name="bxLx" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障问题：</label>
+                <div class="col-sm-8">
+                    <input name="bxWt" th:field="*{bxWt}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修姓名：</label>
+                <div class="col-sm-8">
+                    <input name="bxXm" th:field="*{bxXm}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修电话：</label>
+                <div class="col-sm-8">
+                    <input name="bxDh" th:field="*{bxDh}" class="form-control" type="text">
+                    <input name="yu1" th:field="*{yu1}"  class="form-control" type="hidden">
+                    <input name="yu2" id="yu2" th:field="*{yu2}"  class="form-control" type="hidden">
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" onclick="bx()" >直接报修</button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" onclick="denglu()" >登录</button>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/bxdxx";
+        $("#form-bxdxx-edit").validate({
+            focusCleanup: true
+        });
+
+        function bx() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/addSaves", $('#form-bxdxx-edit').serialize());
+            }
+            alert("已提交，请耐心等待，我们将尽快派遣工程师为您解决问题!");
+        }
+
+        function denglu(){
+            var prefix1 = ctx + "system/dwxxb";
+            var sid=$("#yu2").val();
+            window.open(prefix1+"/denglu/"+sid)
+        }
+
+    </script>
+</body>
+</html>

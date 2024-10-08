@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" style="font-size: 42.8646px; --mainBgColor:#0c294c; --mainBgLightColor:#0b2545; --mainBgLightOpcityColor:rgba(49,104,207, 0.8); --mainBorderColor1:#0b3b60; --mainBorderColor2:#0b3b60; --mainBorderLightColor:#31A7FF; --mainFontColor:#31A7FF; --lineLightColor:#31a5fd; --centerTopBgColor1:#3168cf; --centerTopBgColor2:#314985; --centerTopBgColor3:#0b1a31; --centerTopNumBorderColor:rgba(49,167,255,0.5); --centerTopColor:#C2F3FF; --centerTopUnitBorderColor:#31a7ff; --repairLiBgColor:rgba(0, 102, 153, 0.498039); --repairLiTagColor1:#1c6493; --repairLiTagColor2:#0b4c76; --borderDashedColor:rgba(11,59,96,0.3); --emptyDataColor:rgba(11,59,96,0.7);">
+<head>
+    <th:block th:include="include :: header('修改单位管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>数据屏</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" th:href="@{/css1/layui.css}" media="all">
+<link rel="stylesheet" th:href="@{/css1/admin.css}" media="all">
+<link rel="stylesheet" th:href="@{/css1/liMarquee.css}">
+<!--网页标题左侧显示-->
+<link rel="icon" href="https://www.qnbaoxiu.com/yun/static/img/favicon.ico" type="image/x-icon">
+<!--收藏夹显示图标-->
+<link rel="shortcut icon" href="https://www.qnbaoxiu.com/yun/static/img/favicon.ico" type="image/x-icon">
+<link ref="icon" href="https://www.qnbaoxiu.com/yun/static/img/notice_error.png" type="image/x-icon">
+<link rel="stylesheet" th:href="@{/css1/index.css}">
+
+<script type="text/javascript" th:src="@{/js1/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js1/template.min.js}"></script>
+<script type="text/javascript" th:src="@{/js1/jquery.liMarquee.js}"></script>
+<script type="text/javascript" th:src="@{/js1/jquery.SuperSlide.2.1.1.js}"></script>
+<script type="text/javascript" th:src="@{/js1/rem.js}"></script>
+<script type="text/javascript" th:src="@{/js1/layui.all.js}" charset="utf-8"></script>
+<link id="layuicss-laydate" rel="stylesheet" th:href="@{/css1/laydate.css}" media="all">
+<link id="layuicss-layer" rel="stylesheet" th:href="@{/css1/layer.css}" media="all">
+<link id="layuicss-skincodecss" rel="stylesheet" th:href="@{/css1/code.css}" media="all">
+<script type="text/javascript" th:src="@{/js1/echarts5.2.2.min.js}"></script>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<body class="chart-data-body">
+<div class="loading-area" id="loadingArea" style="display: none;">
+    <div class="loadbox"><img src="./数据屏_files/loading.gif"> 页面加载中...</div>
+</div>
+<div class="active-info chart-data" data-type="hideAllBox">
+    <div class="chart-header fr_center">
+        <div class="header-title active-info" data-type="changeEnterpriseInfo">
+            <div class="title-area fr_center">
+                <span id="enterpriseName"></span>
+                <i class="iconfont icon-xiaojiantou-shixinxia enterprise-switch-icon" style="display: none;"></i>
+                <input type="hidden" id="selectEnterpriseVal" value="0">
+                <input type="hidden" id="enterpriseId" value="0">
+            </div>
+            <div class="layui-form layui-form-select enterprise-list active-info" data-type="selectEnterpriseInfo" style="display: none;">
+                <select name="enterpriseInfo" id="enterpriseInfo" lay-filter="enterpriseInfo" lay-search="">
+                    <option value="0">全部</option>
+                </select>
+            </div>
+        </div>
+        <div class="header-nav fc_center">
+            <ul class="nav-list fr">
+                <li class="nav-item nav-active">湖北华钦麒科技有限公司</li>
+            </ul>
+        </div>
+        <div class="header-time fr">
+            <div class="date-info">
+                <span id="yearText">2023</span><text>年</text><span id="monthText">02</span><text>月</text><span id="dayText">10</span><text>日</text>
+            </div>
+            <div class="time-info">
+                <span id="hoursText">14</span><text>:</text><span id="minuteText">21</span><text>:</text><span id="secondText">51</span>
+            </div>
+            <div class="week-info">
+                <text>星期</text><span id="weekText">五</span>
+            </div>
+        </div>
+    </div>
+    <div class="chart-main fr">
+        <div class="main-left fc">
+            <div class="left_1 fc_center" id="left01">
+                <!--技术员排行-->
+                <div class="box-title fr_center">
+                    <!--<i class="title-tag"></i>-->
+                    <i class="titleicon-01 iconfont icon-lingxing"></i>
+                    <i class="titleicon-02 iconfont icon-tubiao"></i>
+                    <text>技术员排行</text>
+                </div>
+                <div class="box-content repair-list">
+                    <div class="repair-marquee">
+                        <div class="empty-info fc_center repair-member" style="display: none;">
+                            <i class="iconfont icon-queshengye_zanwulianxifangshi"></i>
+                            <text>~ 暂无完成工单的技术员 ~</text>
+                        </div>
+                        <ul class="repair-content fc" id="repairContent" style="top: 0px; height: 13.3854px;"><li class="fr">              <div class="rank-num fc_center">01</div>              <div class="repair-header"><img src="./数据屏_files/man.png" alt=""></div>              <div class="repair-info fc_between">                  <div class="repair-txt fr_between">                      <text>雷成涛</text>                      <text>10单</text>                  </div>                  <div class="repair-line">                      <text class="line-gradient" style="width: 100.00%"></text>                  </div>               </div>          </li></ul>
+                    </div>
+                </div></div>
+            <div class="left_2 fc_center" id="left02">
+                <!--当前年的月数据统计-->
+                <div class="box-title fr_center">
+                    <!--<i class="title-tag"></i>-->
+                    <i class="titleicon-01 iconfont icon-lingxing"></i>
+                    <i class="titleicon-02 iconfont icon-tubiao"></i>
+                    <text>月数据统计</text>
+                </div>
+                <div class="box-content fc_center">
+                    <div class="month-data-info" id="twelveMonth" _echarts_instance_="ec_1676009802524" style="-webkit-tap-highlight-color: transparent; user-select: none; position: relative;"><div style="position: relative; width: 133px; height: 188px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="133" height="188" style="position: absolute; left: 0px; top: 0px; width: 133px; height: 188px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+                </div></div>
+            <script type="text/javascript">
+                let echartsMonthOrderNumLine;
+                 let sj=45;
+                setInterval(refreshEchartsMonthOrderNumLine,1000);
+                function refreshEchartsMonthOrderNumLine() {
+                    let linedata=[0,23,45,33,5,6,7,8,9,10,11,12];
+                    sj++;
+                    let optionLine = {
+                        tooltip: {  //是否显示提示框组件。
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            top: 0,
+                            x: 'left',
+                            data: "今年"
+                        },
+                        grid: {
+                            top: '8%',
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            axisLine: {  //x轴线
+                                show: true,
+                                lineStyle: {
+                                    type: 'solid',
+                                    color: "#fff"
+                                }
+                            },
+                            axisTick: {
+                                show: true,  //是否显示坐标轴刻度
+                                inside: false,  //坐标轴刻度是否朝内，默认朝外。
+                                length: 3,  //坐标轴刻度的长度。
+                            },
+                            axisLabel: {
+                                show: true,
+                                interval: 'auto',
+                                rotate: 45,
+                                margin: 13,
+                                textStyle:{
+                                    fontSize: 9,
+                                    color: '#fff'
+                                }
+                            },
+                            boundaryGap: false,
+                            data: ["01月","02月","03月","04月","05月","06月","07月","08月","09月","10月","11月","12月"]
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    type: 'solid',
+                                    color: "#fff"
+                                }
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle:{
+                                    fontSize: 9,
+                                    color: '#fff'
+                                }
+                            },
+                            min: 0,
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    type: 'dashed',
+                                    color: "rgba(255, 255, 255, 0.03)"
+                                }
+                            },
+                        },
+                        series: [{
+                            name: '今年',
+                            data: linedata,
+                            type: 'line',
+                            stack: 'Total',
+                            color: '#56CFA1',
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            areaStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0,
+                                        color: '#56CFA1'
+                                    }, {
+                                        offset: 1,
+                                        color: 'rgba(255, 70, 131,0)'
+                                    }])
+                                }
+                            },
+                            itemStyle : {
+                                normal: {
+                                    label : {
+                                        show: true,
+                                        color: '#FBC128',
+                                    },
+                                    textStyle:{
+                                        fontSize: 9
+                                    }
+                                }
+                            }
+                        }]
+                    };
+                    echartsMonthOrderNumLine = echarts.init(document.getElementById('twelveMonth'));
+                    echartsMonthOrderNumLine.setOption(optionLine);
+                }
+                window.onresize = function(){
+                    echartsMonthOrderNumLine.resize();
+                }
+            </script>
+            <div class="left_3 fc_center" id="left03">
+                <!--source：订单来源 1 扫码 2 新建工单 3 补单 4附近单位报修 5 一键报修 6 巡检任务生成-->
+                <!--报修方式统计-->
+                <div class="box-title fr_center">
+                    <!--<i class="title-tag"></i>-->
+                    <i class="titleicon-01 iconfont icon-lingxing"></i>
+                    <i class="titleicon-02 iconfont icon-tubiao"></i>
+                    <text>报修方式统计</text>
+                </div>
+                <div class="box-content">
+                    <div class="empty-info fc_center repairtype-empty" style="display: none;">
+                        <i class="iconfont icon-queshengye_zanwusousuo"></i>
+                        <text>~ 暂无报修工单 ~</text>
+                    </div>
+                    <div class="repairtype-echarts-info fc_center">
+                        <div class="repair-type" id="repairType" _echarts_instance_="ec_1676009802525" style="-webkit-tap-highlight-color: transparent; user-select: none; position: relative;"><div style="position: relative; width: 133px; height: 188px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="133" height="188" style="position: absolute; left: 0px; top: 0px; width: 133px; height: 188px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+                    </div>
+                    <div class="repairtype-txt-area">
+                        <ul class="repairtype-txt-list" id="repairTypeList"><li class="fr"><text>扫码报修</text><span>100.00%</span></li><li class="fr"><text>新建工单</text><span>0.00%</span></li><li class="fr"><text>补单</text><span>0.00%</span></li><li class="fr"><text>附近单位</text><span>0.00%</span></li><li class="fr"><text>其他</text><span>0.00%</span></li></ul>
+                    </div>
+                </div></div>
+        </div>
+        <div class="main-center fc">
+            <div class="center-area fc">
+                <div class="center_1">
+                    <div class="order-nums fr_center">
+                        <div class="top-tri01"></div>
+                        <div class="top-tri02"></div>
+                        <div class="top-tri03"></div>
+                        <!--工单总数-->
+                        <div class="total-num total-l fc_center">
+                            <div class="top-line-info"></div>
+                            <div class="right1-line-info"></div>
+                            <div class="right2-line-info"></div>
+                            <div class="bottom-line-info"></div>
+                            <div class="bottom-small-line"></div>
+                            <div class="top-info">
+                                <div class="top-bg"></div>
+                                <div class="top-info-content fr_center">
+                                    <text>工单总数</text>
+                                    <div class="block-info fr">
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-info fr_center">
+                                <div class="number-info fr_center" id="orderCountYear"><span class="number-item">0</span><span class="number-item">0</span><span class="number-item" id="sw">1</span><span class="number-item" id="gw">0</span></div>
+                               <script>
+                                   //没一秒执行一次数据
+                                  /* let gw=0;
+                                   setInterval(gjzd,1000);
+                                   function gjzd() {
+                                       gw=gw+1;
+                                       $("#gw").text(gw);
+                                   }*/
+                               </script>
+                                <div class="circle-info fc_center">
+                                    <div class="year-order-num fc_center" id="yearOrderNumCircle">年</div>
+                                </div>
+                            </div>
+                            <div class="bottom-info fr_center">
+                                <div class="prev-item">
+                                    <text>去年</text><span id="orderCountLastYear">0</span><text>单</text>
+                                </div>
+                                <div class="year-percent">
+                                    <text>同比</text>
+                                    <span id="comparedWithSame" class="up-info">+100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--今日工单-->
+                        <div class="total-num total-r fc_center">
+                            <div class="top-line-info"></div>
+                            <div class="left1-line-info"></div>
+                            <div class="left2-line-info"></div>
+                            <div class="bottom-line-info"></div>
+                            <div class="bottom-small-line"></div>
+                            <div class="top-info fr_center">
+                                <div class="top-bg"></div>
+                                <div class="top-info-content fr_center">
+                                    <div class="block-info fr">
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                        <i class="iconfont icon-tx-fill-pinghangsibianxing"></i>
+                                    </div>
+                                    <text>今日工单</text>
+                                </div>
+                            </div>
+                            <div class="center-info fr_center">
+                                <div class="circle-info fc_center">
+                                    <div class="today-order-num fc_center" id="todayOrderNumCircle">日</div>
+                                </div>
+                                <div class="number-info fr_center" id="orderCountToday"><span class="number-item">0</span><span class="number-item">0</span><span class="number-item">0</span><span class="number-item">0</span></div>
+                            </div>
+                            <div class="bottom-info fr_center">
+                                <div class="prev-item">
+                                    <text>昨日</text><span id="orderCountYesterday">0</span><text>单</text>
+                                </div>
+                                <div class="year-percent">
+                                    <text>环比</text>
+                                    <span id="sequential" class="flat-info">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-tri"></div>
+                    </div>
+                </div>
+                <div class="center_2 fr_center">
+                    <div class="status-info fr">
+                        <div class="line_box status-item fc_center">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num" id="status01">0</div>
+                            <div class="status-txt">待派单</div>
+                        </div>
+                        <div class="line_box status-item fc_center">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num" id="status02">0</div>
+                            <div class="status-txt">未接单</div>
+                        </div>
+                        <div class="line_box status-item fc_center">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num" id="status03">0</div>
+                            <div class="status-txt">处理中</div>
+                        </div>
+                        <div class="line_box status-item fc_center">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num" id="status04">0</div>
+                            <div class="status-txt">待确认</div>
+                        </div>
+                        <div class="line_box status-item fc_center">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num" id="status05">10</div>
+                            <div class="status-txt">已完成</div>
+                        </div>
+                        <div class="line_box status-item fc_center timeout-item">
+                            <!--左上边框-->
+                            <div class="s_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                            <!--右上边框-->
+                            <div class="s_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                            <!--左下边框-->
+                            <div class="s_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                            <!--右下边框-->
+                            <div class="s_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                            <div class="status-num">0</div>
+                            <div class="status-txt">已超时</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center_3 new-order fc">
+                    <div class="center-title fc_center">
+                        <!--<div class="play-audio" id="audioBtn"><i class="iconfont icon-shengyin"></i></div>-->
+                        <!--<div class="title-english">LATEST·ORDERLIST</div>-->
+                        <div class="title-txt">
+                            <text class="titleicon-01 iconfont icon-lingxing"></text>
+                            <text class="titleicon-02 iconfont icon-tubiao"></text>
+                            最新工单排行 <i class="top-num-icon">TOP20</i>
+                            <text class="titleicon-03 iconfont icon-lingxing"></text>
+                            <text class="titleicon-04 iconfont icon-tubiao"></text>
+                        </div>
+                        <div class="linear-line"></div>
+                        <div class="full-screen" id="fullScreenBtn"><i class="iconfont icon-quanping"></i></div>
+                    </div>
+                    <div class="line_box order-area">
+                        <!--左上边框-->
+                        <div class="t_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+                        <!--右上边框-->
+                        <div class="t_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+                        <!--左下边框-->
+                        <div class="t_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+                        <!--右下边框-->
+                        <div class="t_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+                        <div class="order-list fc">
+                            <div class="list-title fr">
+                                <span class="title-item col-1">工单号</span>
+                                <span class="title-item col-2">单位名称</span>
+                                <span class="title-item col-3">报修部门</span>
+                                <span class="title-item col-4">报修区域</span>
+                                <span class="title-item col-5">报修人</span>
+                                <span class="title-item col-6">联系电话</span>
+                                <span class="title-item col-7">故障类型</span>
+                                <span class="title-item col-8">状态</span>
+                            </div>
+                            <div class="list-content">
+                                <div class="empty-info fc_center order-empty" style="display: none;">
+                                    <i class="iconfont icon-queshengye_zanwufangan"></i>
+                                    <text>~ 暂无报修工单 ~</text>
+                                </div>
+                                <div class="order-marquee str_wrap str_vertical str_static">
+                                    <div class="str_move str_origin" id="data_bottom_list">
+                                        <ul class="order-content fc" id="newOrderList">
+                                            <li class="fr"> <span class="content-item col-1">1</span>                <span class="content-item col-2">湖北华钦麒科技有限公司1</span>                 <span class="content-item col-3"></span>                                  <span class="content-item col-4">【示例】办公楼 </span>               <span class="content-item col-5">马磊</span>                  <span class="content-item col-6">1234567890</span>              <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"><span class="content-item col-1">2</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司2</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr">  <span class="content-item col-1">3</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司3</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"> <span class="content-item col-1">4</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司4</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr">  <span class="content-item col-1">5</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司5</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"> <span class="content-item col-1">6</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司6</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"> <span class="content-item col-1">7</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司7</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"> <span class="content-item col-1">8</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司8</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"><span class="content-item col-1">9</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司9</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 测试</span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li>
+                                            <li class="fr"> <span class="content-item col-1">10</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司10</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼</span>                 <span class="content-item col-5">雷成涛</span>                 <span class="content-item col-6">18986858524</span>                 <span class="content-item col-7">【示例】电脑故障</span><span class="content-item col-8 yiwancheng">已完成</span></li></ul>
+                                    </div></div>
+                            </div>
+                        </div>
+                        <script>
+                            var bool = false;
+                            function autoScroll(obj) {
+                                if (bool) return;//判断运行和停止
+                                $(obj).find("ul").animate({ marginTop: "-30px" }, 500, function () { // margin高度为li高度
+                                    $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+                                })
+                            }
+                            $(function () {
+                                setInterval('autoScroll("#data_bottom_list")', 2000);
+                            })
+                            $("#data_bottom_list").mouseover(function () {   //li鼠标移入，停止移动
+                                bool = true;
+                            });
+                            $("#data_bottom_list").mouseout(function () {
+                                bool = false;
+                            });
+
+
+                            //顶部时间显示   X年X月X日 X:X:X
+                            let t = null;
+                            t = setTimeout(time, 1000);
+                            function time() {
+                                clearTimeout(t); /*清除定时器*/
+                                let dt = new Date();
+                                let y = dt.getFullYear();
+                                let mt = dt.getMonth() + 1;
+                                let day = dt.getDate();
+                                let h = dt.getHours();
+                                let m = dt.getMinutes();
+                                let s = dt.getSeconds();
+                                mt = mt < 10 ? '0'+mt : mt;
+                                day = day < 10 ? '0'+day : day;
+                                h = h < 10 ? '0'+h : h;
+                                m = m < 10 ? '0'+m : m;
+                                s = s < 10 ? '0'+s : s;
+                                $("#yearText").text(y);
+                                $("#monthText").text(mt);
+                                $("#dayText").text(day);
+                                $("#hoursText").text(h);
+                                $("#minuteText").text(m);
+                                $("#secondText").text(s);
+                                t = setTimeout(time, 1000);
+                            }
+                            function getDayofWeek() {
+                                let _weekText = "";
+                                let time = new Date();
+                                let numOfWeek = time.getDay();
+                                switch (numOfWeek) {
+                                    case 0:
+                                        _weekText = "日";
+                                        break;
+                                    case 1:
+                                        _weekText = "一";
+                                        break;
+                                    case 2:
+                                        _weekText = "二";
+                                        break;
+                                    case 3:
+                                        _weekText = "三";
+                                    case 4:
+                                        _weekText = "四";
+                                        break;
+                                    case 5:
+                                        _weekText = "五";
+                                        break;
+                                    case 6:
+                                        _weekText = "六";
+                                        break;
+                                }
+                                $("#weekText").text(_weekText);
+                            }
+                            getDayofWeek();
+
+
+                        </script>
+                        <!--最新工单透明弹窗-->
+                        <div class="new-order-list fr_center" id="newOrderArea">
+                            <!--<i class="iconfont icon-shengyin"></i>
+                            <div class="new-order-info fr_center">
+                                <span>2022111700110004</span>
+                                <span class="col-2">西安雀维信息科技有限公司</span>
+                                <span class="col-3">销售部</span>
+                                <span class="col-4">平安国际大厦B座</span>
+                                <span class="col-7">打印机</span>
+                                <span>2022.11.17 18:27</span>
+                            </div>
+                            <div class="count-down">(5s)</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-right fc">
+            <div class="right_1 fc_center" id="right01">
+                <!--故障类型统计-->
+                <div class="box-title fr_center">
+                    <!--<i class="title-tag"></i>-->
+                    <i class="titleicon-01 iconfont icon-lingxing"></i>
+                    <i class="titleicon-02 iconfont icon-tubiao"></i>
+                    <text>故障类型统计</text>
+                    <i class="top-num-icon">TOP5</i>
+                </div>
+                <div class="box-content">
+                    <div class="empty-info fc_center faulttype-empty" style="display: none;">
+                        <i class="iconfont icon-queshengye_zanwuyujing"></i>
+                        <text>~ 暂无报修工单 ~</text>
+                    </div>
+                    <div class="faulttype-echarts-info fc_center">
+                        <div class="fault-type" id="faultType" _echarts_instance_="ec_1676009802526" style="-webkit-tap-highlight-color: transparent; user-select: none; position: relative;"><div style="position: relative; width: 178px; height: 171px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="178" height="171" style="position: absolute; left: 0px; top: 0px; width: 178px; height: 171px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+                    </div>
+                    <div class="faulttype-txt-area">
+                        <ul class="faulttype-txt-list" id="faultTypeList">
+                            <li class="fr"><text>【示例】电脑故障</text><span>10</span>单</li></ul>
+                    </div>
+                </div></div>
+            <div class="right_2 fc_center" id="right02">
+                <!--上报区域统计-->
+                <div class="box-title fr_center">
+                    <!--<i class="title-tag"></i>-->
+                    <i class="titleicon-01 iconfont icon-lingxing"></i>
+                    <i class="titleicon-02 iconfont icon-tubiao"></i>
+                    <text>单位统计</text>
+                    <i class="top-num-icon">TOP5</i>
+                </div>
+                <div class="box-content">
+                    <div class="repairlocation-info">
+                        <div class="empty-info fc_center repairlocation-empty" style="display: none;">
+                            <i class="iconfont icon-queshengye_zanwudizhi"></i>
+                            <text>~ 暂无区域上报工单 ~</text>
+                        </div>
+                        <ul class="repairlocation-list fc_center" id="repairLocationList"><li class="repairlocation-item">                       <div class="repairlocation-txt fr">                            <span class="txt-num fc_center"><i>1</i></span>                            <text class="txt-detail">【示例】办公楼</text>                       </div>                       <div class="repairlocation-val fr_center">                            <span class="progress-bar" style="width: 100.00%"></span>                            <text class="bar-num">9单</text>                       </div>                   </li></ul>
+                    </div>
+                </div></div>
+        </div>
+    </div>
+    <!--设置：可切换皮肤+更换栏目-->
+    <div class="active-info setting-area" id="settingArea" data-type="hideSwitch" style="right: -25%;">
+        <div class="setting-module">
+            <div class="module-info">
+                <div class="module-title">皮肤切换</div>
+                <ul class="skin-list fr">
+                    <li class="active-info skin-item skin01 fr_center skin-active" data-type="switchSkin" data-value="1"><span class="fc_center"><i class="iconfont icon-iconfontcheck"></i></span></li>
+                    <li class="active-info skin-item skin02 fr_center" data-type="switchSkin" data-value="2"><span class="fc_center"><i class="iconfont icon-iconfontcheck"></i></span></li>
+                </ul>
+            </div>
+            <div class="module-info">
+                <div class="module-title">栏目更换</div>
+                <ul class="module-list" id="partContent"><li class="module-item fr_between">            <div class="item-title">左侧栏目1</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>技术员排行</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="1" data-value="1" data-parentvalue="1">                 <span>技术员排行</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="1" data-value="2" data-parentvalue="1">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="1" data-value="7" data-parentvalue="1">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li><li class="module-item fr_between">            <div class="item-title">左侧栏目2</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>月数据统计</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="8" data-value="8" data-parentvalue="2">                 <span>月数据统计</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="8" data-value="2" data-parentvalue="2">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="8" data-value="7" data-parentvalue="2">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li><li class="module-item fr_between">            <div class="item-title">左侧栏目3</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>报修方式统计</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="3" data-value="3" data-parentvalue="3">                 <span>报修方式统计</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="3" data-value="2" data-parentvalue="3">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="3" data-value="7" data-parentvalue="3">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li><li class="module-item fr_between">            <div class="item-title">右侧栏目1</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>故障类型统计</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="4" data-value="4" data-parentvalue="4">                 <span>故障类型统计</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="4" data-value="2" data-parentvalue="4">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="4" data-value="7" data-parentvalue="4">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li><li class="module-item fr_between">            <div class="item-title">右侧栏目2</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>上报区域统计</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="5" data-value="5" data-parentvalue="5">                 <span>上报区域统计</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="5" data-value="2" data-parentvalue="5">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="5" data-value="7" data-parentvalue="5">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li><li class="module-item fr_between">            <div class="item-title">右侧栏目3</div>            <div class="select-value">                 <div class="active-info cur-value fr_between switch-module" data-type="switchModule">                      <span>报修部门统计</span>                      <i class="iconfont icon-arrow-down"></i>                 </div>                 <ul class="module-select-area">    <li class="active-info select-item fr_center select-cur" data-type="switchPartValue" data-prevvalue="6" data-value="6" data-parentvalue="6">                 <span>报修部门统计</span>                 <i class="iconfont icon-iconfontcheck"></i>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="6" data-value="2" data-parentvalue="6">                 <span>维修满意度</span>             </li>    <li class="active-info select-item fr_center" data-type="switchPartValue" data-prevvalue="6" data-value="7" data-parentvalue="6">                 <span>用户评价</span>             </li>        </ul>                 </div>             </li></ul>
+            </div>
+            <div class="module-info">
+                <div class="module-title">系统提示音<i class="iconfont icon-xiaolaba" id="audioBtn"></i></div>
+                <ul class="voice-list">
+                    <li class="voice-item fr_between"><text>青鸟提醒您，请做好接单准备（默认）</text><i class="active-info iconfont icon-danxuanxuanzhong" data-type="switchVoice" data-value="1" data-voiceurl="https://www.qnbaoxiu.com/help/qnmp3.mp3"></i></li>
+                    <li class="voice-item fr_between"><text>您有新的工单，请及时处理</text><i class="active-info iconfont icon-weixuanzhong" data-type="switchVoice" data-value="2" data-voiceurl="https://www.qnbaoxiu.com/help/qnvoice2.mp3"></i></li>
+                    <li class="voice-item fr_between"><text>新工单来了，请尽快处理</text><i class="active-info iconfont icon-weixuanzhong" data-type="switchVoice" data-value="3" data-voiceurl="https://www.qnbaoxiu.com/help/qnvoice3.mp3"></i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--音频处理-->
+    <audio webkit-playsinline="true" playsinline="true" autoplay="autoplay" id="autoPlayAduio" src=""></audio>
+</div>
+<!--最新工单排行全屏展示-->
+<div class="neworder-container fc_center" id="newOrderContainer">
+    <!--左上边框-->
+    <div class="p_line_box"><i class="t_l_line"></i><i class="l_t_line"></i></div>
+    <!--右上边框-->
+    <div class="p_line_box"><i class="t_r_line"></i><i class="r_t_line"></i></div>
+    <!--左下边框-->
+    <div class="p_line_box"><i class="l_b_line"></i><i class="b_l_line"></i></div>
+    <!--右下边框-->
+    <div class="p_line_box"><i class="r_b_line"></i><i class="b_r_line"></i></div>
+    <div class="pop-up fc_center">
+        <div class="center-title fc_center">
+            <!--<div class="title-english">LATEST·ORDERLIST</div>-->
+            <div class="title-txt">
+                <text class="titleicon-01 iconfont icon-lingxing"></text>
+                <text class="titleicon-02 iconfont icon-tubiao"></text>
+                最新工单排行 <i class="top-num-icon">TOP20</i>
+                <text class="titleicon-03 iconfont icon-lingxing"></text>
+                <text class="titleicon-04 iconfont icon-tubiao"></text>
+            </div>
+            <div class="linear-line"></div>
+            <div class="cancel-full-screen" id="cancelFullScreenBtn"><i class="iconfont icon-quxiaoquanping"></i></div>
+        </div>
+        <div class="line_box order-area">
+            <div class="order-list fc">
+                <div class="list-title fr">
+                    <span class="title-item col-1">工单号</span>
+                    <span class="title-item col-2">单位名称</span>
+                    <span class="title-item col-3">报修部门</span>
+                    <span class="title-item col-4">报修区域</span>
+                    <span class="title-item col-5">报修人</span>
+                    <span class="title-item col-6">联系电话</span>
+                    <span class="title-item col-7">故障类型</span>
+                    <span class="title-item col-9">故障描述</span>
+                    <span class="title-item col-8">状态</span>
+                </div>
+                <div class="list-content">
+                    <div class="fullscreen-ordermarquee">
+                        <div class="empty-info fc_center order-empty full-screen-empty" style="display: none;">
+                            <i class="iconfont icon-queshengye_zanwufangan"></i>
+                            <text>~ 暂无报修工单 ~</text>
+                        </div>
+                        <ul class="order-content fc" id="fullScreenNewOrderList"><li class="fr">                 <span class="content-item col-1">2023020426930012</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3"></span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">啦啦啦啦啦</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930011</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">啦啦啦啦啦啦啦啦</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930010</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">去我家</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930009</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">说他空哦</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930008</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">1234567879</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930007</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">测试一下</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930006</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">打印机不能打印，老是卡纸，派人来看看</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930005</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 </span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">重装系统</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930003</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼 测试</span>                 <span class="content-item col-5">马磊</span>                 <span class="content-item col-6">1234567890</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">电脑卡</span><span class="content-item col-8 yiwancheng">已完成</span></li><li class="fr">                 <span class="content-item col-1">2023020426930001</span>                 <span class="content-item col-2">湖北华钦麒科技有限公司</span>                 <span class="content-item col-3">【示例】行政部</span>                 <span class="content-item col-4">【示例】办公楼</span>                 <span class="content-item col-5">雷成涛</span>                 <span class="content-item col-6">18986858524</span>                 <span class="content-item col-7">【示例】电脑故障</span>                 <span class="content-item col-9">这是一条测试工单!</span><span class="content-item col-8 yiwancheng">已完成</span></li></ul>
+                    </div>
+                </div>
+            </div>
+            <!--最新工单透明弹窗-->
+            <div class="new-order-list fr_center" id="fullScreenNewOrderArea">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--es6兼容-->
+<script th:src="@{/js1/babel.js}"></script>
+<script th:src="@{/js1/polyfill.min.js}"></script>
+
+
+</body></html>

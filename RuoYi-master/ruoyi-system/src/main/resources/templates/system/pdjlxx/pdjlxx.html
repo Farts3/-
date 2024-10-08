@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('报修单列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>报修单位：</label>
+                            <input type="text" name="bxDw"/>
+                        </li>
+                        <li>
+                            <label>报修部门：</label>
+                            <input type="text" name="bxBm"/>
+                        </li>
+
+                        <li>
+                            <label>故障问题：</label>
+                            <input type="text" name="bxWt"/>
+                        </li>
+                        <li>
+                            <label>报修姓名：</label>
+                            <input type="text" name="bxXm"/>
+                        </li>
+                        <li>
+                            <label>报修电话：</label>
+                            <input type="text" name="bxDh"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:bxdxx:edit')}]];
+    var bxLxDatas = [[${@dict.getType('sb_lx')}]];
+    var prefix = ctx + "system/bxdxx";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list1",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            modalName: "报修单",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'sid',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'bxDw',
+                    title: '报修单位'
+                },
+                {
+                    field: 'bxBm',
+                    title: '报修部门'
+                },
+                {
+                    field: 'bxLx',
+                    title: '故障类型'
+                },
+                {
+                    field: 'bxWt',
+                    title: '故障问题'
+                },
+                {
+                    field: 'bxXm',
+                    title: '报修姓名'
+                },
+                {
+                    field: 'bxDh',
+                    title: '报修电话'
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info  btn-xs " href="javascript:void(0)" onclick="xljl(\'' + row.sid + '\')"><i class="fa fa-edit"></i>修理记录</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function pd(){
+        //获取保修单id 让人去修理
+        var a= $("#bootstrap-table").bootstrapTable('getSelections');
+        if(a.length>1){
+            $.modal.open("只能选择一条数据");
+            return;
+        }else {
+            var prefix1 = ctx +"system/pdjlxx";
+            var url = prefix1 + '/pfry/' + a[0].sid;
+            $.modal.open("新增派单", url);
+        }
+    }
+
+    function xljl(sbid){
+        var url = prefix + '/xljlzj/' + sbid;
+        $.modal.openTab("修理记录", url);
+    }
+
+
+</script>
+</body>
+</html>

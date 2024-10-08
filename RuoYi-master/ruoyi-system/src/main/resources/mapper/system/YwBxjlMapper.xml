@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.YwBxjlMapper">
+    
+    <resultMap type="YwBxjl" id="YwBxjlResult">
+        <result property="sid"    column="sid"    />
+        <result property="bxDw"    column="bx_dw"    />
+        <result property="bxBm"    column="bx_bm"    />
+        <result property="bxLx"    column="bx_lx"    />
+        <result property="bxWt"    column="bx_wt"    />
+        <result property="bxXm"    column="bx_xm"    />
+        <result property="bxDh"    column="bx_dh"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu16"    column="yu16"    />
+    </resultMap>
+
+    <sql id="selectYwBxjlVo">
+         select sid, bx_dw, bx_bm, bx_lx, bx_wt, bx_xm, bx_dh, yu1, yu2, yu3,if((select count(sid) from yw_pdjl where bxjlid=b.sid)>0,'是','否') as yu4, yu5, yu16 from yw_bxjl b
+    </sql>
+
+    <select id="selectYwBxjlList" parameterType="YwBxjl" resultMap="YwBxjlResult">
+        select sid, bx_dw, bx_bm, bx_lx, bx_wt, bx_xm, bx_dh, yu1, yu2, yu3,if((select count(sid) from yw_pdjl where bxjlid=b.sid)>0,'是','否') as yu4, yu5,(select count(1) from yw_wxjl where yu1=b.sid) as yu16 from yw_bxjl b
+   <where>
+            <if test="bxDw != null  and bxDw != ''"> and bx_dw like concat('%', #{bxDw}, '%')</if>
+            <if test="bxBm != null  and bxBm != ''"> and bx_bm like concat('%', #{bxBm}, '%')</if>
+            <if test="bxLx != null  and bxLx != ''"> and bx_lx like concat('%', #{bxLx}, '%')</if>
+            <if test="bxWt != null  and bxWt != ''"> and bx_wt like concat('%', #{bxWt}, '%')</if>
+            <if test="bxXm != null  and bxXm != ''"> and bx_xm = #{bxXm}</if>
+            <if test="bxDh != null  and bxDh != ''"> and bx_dh = #{bxDh}</if>
+            <if test="yu1 != null  and yu1 != ''"> and yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and yu2 = #{yu2}</if>
+            <if test="yu3 != null  and yu3 != ''"> and yu3 = #{yu3}</if>
+            <if test="yu4 != null  and yu4 != ''">
+             <if test='yu4=="是"'>
+             and (select count(sid) from yw_pdjl where bxjlid=b.sid)>0</if>
+                <if test='yu4=="否"'>
+              and (select count(sid) from yw_pdjl where bxjlid=b.sid)=0</if>
+            </if>
+            <if test="yu5 != null  and yu5 != ''"> and yu5 = #{yu5}</if>
+            <if test="yu16 != null  and yu16 != ''"> and yu16 = #{yu16}</if>
+        </where> order by yu3 desc
+    </select>
+
+
+
+    <select id="selectWDList" parameterType="YwBxjl" resultMap="YwBxjlResult">
+        select b.sid, b.bx_dw, b.bx_bm, b.bx_lx, b.bx_wt, b.bx_xm, b.bx_dh, b.yu1, b.yu2, b.yu3,b.yu4, b.yu5, b.yu16 from yw_bxjl b INNER JOIN yw_pdjl a on b.sid=a.bxjlid
+  <where>
+                  and  a.pqry like concat('%', #{yu5}, '%') and a.yu1 like concat('%', #{yu16}, '%')
+      <if test="bxDw != null  and bxDw != ''"> and bx_dw like concat('%', #{bxDw}, '%')</if>
+      <if test="bxBm != null  and bxBm != ''"> and bx_bm like concat('%', #{bxBm}, '%')</if>
+      <if test="bxLx != null  and bxLx != ''"> and bx_lx like concat('%', #{bxLx}, '%')</if>
+      <if test="bxWt != null  and bxWt != ''"> and bx_wt like concat('%', #{bxWt}, '%')</if>
+            <if test="bxXm != null  and bxXm != ''"> and bx_xm = #{bxXm}</if>
+            <if test="bxDh != null  and bxDh != ''"> and bx_dh = #{bxDh}</if>
+            <if test="yu1 != null  and yu1 != ''"> and yu1 = #{yu1}</if>
+      <if test="yu2 != null  and yu2 != ''"> and b.yu2 = #{yu2}</if>
+            <if test="yu3 != null  and yu3 != ''"> and yu3 = #{yu3}</if>
+        </where> order by yu3 desc
+    </select>
+
+
+    
+    <select id="selectYwBxjlBySid" parameterType="String" resultMap="YwBxjlResult">
+        <include refid="selectYwBxjlVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertYwBxjl" parameterType="YwBxjl">
+        insert into yw_bxjl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="bxDw != null">bx_dw,</if>
+            <if test="bxBm != null">bx_bm,</if>
+            <if test="bxLx != null">bx_lx,</if>
+            <if test="bxWt != null">bx_wt,</if>
+            <if test="bxXm != null">bx_xm,</if>
+            <if test="bxDh != null">bx_dh,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu16 != null">yu16,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="bxDw != null">#{bxDw},</if>
+            <if test="bxBm != null">#{bxBm},</if>
+            <if test="bxLx != null">#{bxLx},</if>
+            <if test="bxWt != null">#{bxWt},</if>
+            <if test="bxXm != null">#{bxXm},</if>
+            <if test="bxDh != null">#{bxDh},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu16 != null">#{yu16},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwBxjl" parameterType="YwBxjl">
+        update yw_bxjl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bxDw != null">bx_dw = #{bxDw},</if>
+            <if test="bxBm != null">bx_bm = #{bxBm},</if>
+            <if test="bxLx != null">bx_lx = #{bxLx},</if>
+            <if test="bxWt != null">bx_wt = #{bxWt},</if>
+            <if test="bxXm != null">bx_xm = #{bxXm},</if>
+            <if test="bxDh != null">bx_dh = #{bxDh},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu16 != null">yu16 = #{yu16},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteYwBxjlBySid" parameterType="String">
+        delete from yw_bxjl where sid = #{sid}
+    </delete>
+
+    <delete id="deleteYwBxjlBySids" parameterType="String">
+        delete from yw_bxjl where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.YwWxjlMapper">
+    
+    <resultMap type="YwWxjl" id="YwWxjlResult">
+        <result property="sid"    column="sid"    />
+        <result property="wxwt"    column="wxwt"    />
+        <result property="cljg"    column="cljg"    />
+        <result property="ifghsb"    column="ifghsb"    />
+        <result property="clzt"    column="clzt"    />
+        <result property="wxsj"    column="wxsj"    />
+        <result property="wxry"    column="wxry"    />
+        <result property="tbr"    column="tbr"    />
+        <result property="tbsj"    column="tbsj"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu6"    column="yu6"    />
+        <result property="yu7"    column="yu7"    />
+        <result property="yu8"    column="yu8"    />
+        <result property="yu9"    column="yu9"    />
+    </resultMap>
+
+    <sql id="selectYwWxjlVo">
+        select sid, wxwt, cljg, ifghsb, clzt, wxsj, wxry, tbr, tbsj, yu1, yu2, yu3, yu4, yu5, yu6, yu7, yu8, yu9 from yw_wxjl
+    </sql>
+
+    <select id="selectYwWxjlList" parameterType="YwWxjl" resultMap="YwWxjlResult">
+        select a.sid, a.wxwt, cljg,a.yu2 as ifghsb, clzt, wxsj, wxry, a.tbr, a.tbsj, a.yu1, b.ifys yu2, b.ysr yu3,b.lxdh yu4,DATE_FORMAT(b.yssj,'%Y-%m-%d') yu5, a.yu6, a.yu7, a.yu8,a.yu9 from yw_wxjl a left join yw_ysjlb b on a.sid=b.wxid
+        <where>  
+            <if test="wxwt != null  and wxwt != ''"> and a.wxwt like concat('%', #{wxwt}, '%')</if>
+            <if test="cljg != null  and cljg != ''"> and a.cljg = #{cljg}</if>
+            <if test="ifghsb != null  and ifghsb != ''"> and a.ifghsb = #{ifghsb}</if>
+            <if test="clzt != null  and clzt != ''"> and a.clzt = #{clzt}</if>
+            <if test="wxsj != null "> and a.wxsj = #{wxsj}</if>
+            <if test="wxry != null  and wxry != ''"> and a.wxry = #{wxry}</if>
+            <if test="tbr != null  and tbr != ''"> and a.tbr = #{tbr}</if>
+            <if test="tbsj != null "> and a.tbsj = #{tbsj}</if>
+            <if test="yu1 != null  and yu1 != ''"> and a.yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and a.yu2 = #{yu2}</if>
+            <if test="yu4 != null  and yu4 != ''"> and a.yu4 = #{yu4}</if>
+            <if test="yu5 != null  and yu5 != ''"> and a.yu5 = #{yu5}</if>
+            <if test="yu6 != null  and yu6 != ''"> and a.yu6 = #{yu6}</if>
+            <if test="yu7 != null  and yu7 != ''"> and a.yu7 = #{yu7}</if>
+            <if test="yu8 != null  and yu8 != ''"> and a.yu8 = #{yu8}</if>
+            <if test="yu9 != null  and yu9 != ''"> and a.yu9 = #{yu9}</if>
+        </where> order by a.tbsj desc
+    </select>
+
+
+    <select id="selectYwWxjlListhc" parameterType="YwWxjl" resultMap="YwWxjlResult">
+        select a.sid,b.goods_name as yu2,b.goods_bm as yu3,c.c_name as yu4,c.c_xh as yu5,c.c_money as yu6 from yw_wxjl a inner join xt_goods b on a.yu3=b.sid
+        inner join xt_consumable c on a.yu4=c.sid
+        <where>
+            <if test="wxwt != null  and wxwt != ''"> and a.wxwt like concat('%', #{wxwt}, '%')</if>
+            <if test="cljg != null  and cljg != ''"> and a.cljg = #{cljg}</if>
+            <if test="ifghsb != null  and ifghsb != ''"> and a.ifghsb = #{ifghsb}</if>
+            <if test="clzt != null  and clzt != ''"> and a.clzt = #{clzt}</if>
+            <if test="wxsj != null "> and a.wxsj = #{wxsj}</if>
+            <if test="wxry != null  and wxry != ''"> and a.wxry = #{wxry}</if>
+            <if test="tbr != null  and tbr != ''"> and a.tbr = #{tbr}</if>
+            <if test="tbsj != null "> and a.tbsj = #{tbsj}</if>
+            <if test="yu1 != null  and yu1 != ''"> and a.yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and a.yu2 = #{yu2}</if>
+            <if test="yu4 != null  and yu4 != ''"> and a.yu4 = #{yu4}</if>
+            <if test="yu5 != null  and yu5 != ''"> and a.yu5 = #{yu5}</if>
+            <if test="yu6 != null  and yu6 != ''"> and a.yu6 = #{yu6}</if>
+            <if test="yu7 != null  and yu7 != ''"> and a.yu7 = #{yu7}</if>
+            <if test="yu8 != null  and yu8 != ''"> and a.yu8 = #{yu8}</if>
+            <if test="yu9 != null  and yu9 != ''"> and a.yu9 = #{yu9}</if>
+        </where> order by a.tbsj desc
+    </select>
+
+
+    <select id="selectYwWxjlListshhc" parameterType="YwWxjl" resultMap="YwWxjlResult">
+        select a.sid,d.dwmc yu1,d.dwdz yu2,c.sbnc yu3,c.sblx yu4,c.rjmc yu5,a.yu2 yu6,f.goods_name yu7,f.goods_bm yu8,e.c_name yu9,e.c_money wxwt,b.ifys as ifghsb,b.ysr as clzt,b.yssj as wxsj  from yw_wxjl a
+        left join yw_ysjlb b on a.sid=b.wxid  inner join yw_sbxx c on a.yu1=c.sid
+        inner join xt_dwxxb d on c.dwmc=d.sid left join xt_consumable e on a.yu4=e.sid inner join xt_goods f on e.yu1=f.sid
+        <where>
+            <if test="wxwt != null  and wxwt != ''"> and a.wxwt like concat('%', #{wxwt}, '%')</if>
+            <if test="clzt != null  and clzt != ''"> and a.clzt = #{clzt}</if>
+            <if test="wxsj != null "> and a.wxsj = #{wxsj}</if>
+            <if test="wxry != null  and wxry != ''"> and a.wxry = #{wxry}</if>
+
+        </where> order by a.tbsj desc
+    </select>
+
+    <select id="selectYwWxjlListfl" parameterType="YwWxjl" resultMap="YwWxjlResult">
+        select a.sid,f.goods_name yu1,f.goods_bm yu2,e.c_name yu3,e.c_xh yu4,e.c_cor yu5,e.c_money yu6,a.yu5 yu7 from yw_wxjl a
+        left join yw_ysjlb b on a.sid=b.wxid  inner join yw_sbxx c on a.yu1=c.sid
+        inner join xt_dwxxb d on c.dwmc=d.sid left join xt_consumable e on a.yu4=e.sid inner join xt_goods f on e.yu1=f.sid
+        <where>
+            <if test="yu1 != null  and yu1 != ''"> and f.goods_name like concat('%', #{yu1}, '%')</if>
+            <if test="yu2 != null  and yu2 != ''"> and e.c_name like concat('%', #{yu2}, '%')</if>
+              and a.yu6='1'
+        </where> order by a.tbsj desc
+    </select>
+    
+    <select id="selectYwWxjlBySid" parameterType="String" resultMap="YwWxjlResult">
+        <include refid="selectYwWxjlVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertYwWxjl" parameterType="YwWxjl">
+        insert into yw_wxjl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="wxwt != null">wxwt,</if>
+            <if test="cljg != null">cljg,</if>
+            <if test="ifghsb != null">ifghsb,</if>
+            <if test="clzt != null">clzt,</if>
+            <if test="wxsj != null">wxsj,</if>
+            <if test="wxry != null">wxry,</if>
+            <if test="tbr != null">tbr,</if>
+            <if test="tbsj != null">tbsj,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu6 != null">yu6,</if>
+            <if test="yu7 != null">yu7,</if>
+            <if test="yu8 != null">yu8,</if>
+            <if test="yu9 != null">yu9,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="wxwt != null">#{wxwt},</if>
+            <if test="cljg != null">#{cljg},</if>
+            <if test="ifghsb != null">#{ifghsb},</if>
+            <if test="clzt != null">#{clzt},</if>
+            <if test="wxsj != null">#{wxsj},</if>
+            <if test="wxry != null">#{wxry},</if>
+            <if test="tbr != null">#{tbr},</if>
+            <if test="tbsj != null">#{tbsj},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu6 != null">#{yu6},</if>
+            <if test="yu7 != null">#{yu7},</if>
+            <if test="yu8 != null">#{yu8},</if>
+            <if test="yu9 != null">#{yu9},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwWxjl" parameterType="YwWxjl">
+        update yw_wxjl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxwt != null">wxwt = #{wxwt},</if>
+            <if test="cljg != null">cljg = #{cljg},</if>
+            <if test="ifghsb != null">ifghsb = #{ifghsb},</if>
+            <if test="clzt != null">clzt = #{clzt},</if>
+            <if test="wxsj != null">wxsj = #{wxsj},</if>
+            <if test="wxry != null">wxry = #{wxry},</if>
+            <if test="tbr != null">tbr = #{tbr},</if>
+            <if test="tbsj != null">tbsj = #{tbsj},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu6 != null">yu6 = #{yu6},</if>
+            <if test="yu7 != null">yu7 = #{yu7},</if>
+            <if test="yu8 != null">yu8 = #{yu8},</if>
+            <if test="yu9 != null">yu9 = #{yu9},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteYwWxjlBySid" parameterType="String">
+        delete from yw_wxjl where sid = #{sid}
+    </delete>
+
+    <delete id="deleteYwWxjlBySids" parameterType="String">
+        delete from yw_wxjl where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

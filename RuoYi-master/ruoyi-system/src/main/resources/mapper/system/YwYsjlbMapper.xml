@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.YwYsjlbMapper">
+    
+    <resultMap type="YwYsjlb" id="YwYsjlbResult">
+        <result property="sid"    column="sid"    />
+        <result property="wxid"    column="wxid"    />
+        <result property="ifys"    column="ifys"    />
+        <result property="ysr"    column="ysr"    />
+        <result property="yssj"    column="yssj"    />
+        <result property="lxdh"    column="lxdh"    />
+        <result property="tbr"    column="tbr"    />
+        <result property="tbsj"    column="tbsj"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu6"    column="yu6"    />
+        <result property="yu7"    column="yu7"    />
+        <result property="yu8"    column="yu8"    />
+    </resultMap>
+
+    <sql id="selectYwYsjlbVo">
+        select sid, wxid, ifys, ysr, yssj, lxdh, tbr, tbsj, yu1, yu2, yu3, yu4, yu5, yu6, yu7, yu8 from yw_ysjlb
+    </sql>
+
+    <select id="selectYwYsjlbList" parameterType="YwYsjlb" resultMap="YwYsjlbResult">
+        <include refid="selectYwYsjlbVo"/>
+        <where>  
+            <if test="wxid != null  and wxid != ''"> and wxid = #{wxid}</if>
+            <if test="ifys != null  and ifys != ''"> and ifys = #{ifys}</if>
+            <if test="ysr != null  and ysr != ''"> and ysr = #{ysr}</if>
+            <if test="yssj != null "> and yssj = #{yssj}</if>
+            <if test="lxdh != null  and lxdh != ''"> and lxdh = #{lxdh}</if>
+            <if test="tbr != null  and tbr != ''"> and tbr = #{tbr}</if>
+            <if test="tbsj != null "> and tbsj = #{tbsj}</if>
+            <if test="yu1 != null  and yu1 != ''"> and yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and yu2 = #{yu2}</if>
+            <if test="yu3 != null  and yu3 != ''"> and yu3 = #{yu3}</if>
+            <if test="yu4 != null  and yu4 != ''"> and yu4 = #{yu4}</if>
+            <if test="yu5 != null  and yu5 != ''"> and yu5 = #{yu5}</if>
+            <if test="yu6 != null  and yu6 != ''"> and yu6 = #{yu6}</if>
+            <if test="yu7 != null  and yu7 != ''"> and yu7 = #{yu7}</if>
+            <if test="yu8 != null  and yu8 != ''"> and yu8 = #{yu8}</if>
+        </where>
+    </select>
+    
+    <select id="selectYwYsjlbBySid" parameterType="String" resultMap="YwYsjlbResult">
+        <include refid="selectYwYsjlbVo"/>
+        where sid = #{sid}
+    </select>
+
+    <select id="selectYwYsjlbByyszfSid" parameterType="String" resultMap="YwYsjlbResult">
+        <include refid="selectYwYsjlbVo"/>
+        where wxid = #{sid}
+    </select>
+        
+    <insert id="insertYwYsjlb" parameterType="YwYsjlb">
+        insert into yw_ysjlb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="wxid != null">wxid,</if>
+            <if test="ifys != null">ifys,</if>
+            <if test="ysr != null">ysr,</if>
+            <if test="yssj != null">yssj,</if>
+            <if test="lxdh != null">lxdh,</if>
+            <if test="tbr != null">tbr,</if>
+            <if test="tbsj != null">tbsj,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu6 != null">yu6,</if>
+            <if test="yu7 != null">yu7,</if>
+            <if test="yu8 != null">yu8,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="wxid != null">#{wxid},</if>
+            <if test="ifys != null">#{ifys},</if>
+            <if test="ysr != null">#{ysr},</if>
+            <if test="yssj != null">#{yssj},</if>
+            <if test="lxdh != null">#{lxdh},</if>
+            <if test="tbr != null">#{tbr},</if>
+            <if test="tbsj != null">#{tbsj},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu6 != null">#{yu6},</if>
+            <if test="yu7 != null">#{yu7},</if>
+            <if test="yu8 != null">#{yu8},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwYsjlb" parameterType="YwYsjlb">
+        update yw_ysjlb
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxid != null">wxid = #{wxid},</if>
+            <if test="ifys != null">ifys = #{ifys},</if>
+            <if test="ysr != null">ysr = #{ysr},</if>
+            <if test="yssj != null">yssj = #{yssj},</if>
+            <if test="lxdh != null">lxdh = #{lxdh},</if>
+            <if test="tbr != null">tbr = #{tbr},</if>
+            <if test="tbsj != null">tbsj = #{tbsj},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu6 != null">yu6 = #{yu6},</if>
+            <if test="yu7 != null">yu7 = #{yu7},</if>
+            <if test="yu8 != null">yu8 = #{yu8},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteYwYsjlbBySid" parameterType="String">
+        delete from yw_ysjlb where sid = #{sid}
+    </delete>
+
+    <delete id="deleteys" parameterType="String">
+        delete from yw_ysjlb where wxid = #{sid}
+    </delete>
+
+    <delete id="deleteYwYsjlbBySids" parameterType="String">
+        delete from yw_ysjlb where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

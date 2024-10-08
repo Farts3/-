@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改派单记录')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-pdjlxx-edit" th:object="${ywPdjl}">
+            <input name="sid" th:field="*{sid}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修记录id：</label>
+                <div class="col-sm-8">
+                    <input name="bxjlid" th:field="*{bxjlid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">派遣时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="pqsj" th:value="${#dates.format(ywPdjl.pqsj, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">派遣人员：</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <!-- <input name="pqry" th:field="*{pqry}" class="form-control" type="text">-->
+                        <input id="treeId" name="yu1" type="hidden" th:field="*{yu1}" /><!--yu1,yu1-->
+                        <input class="form-control" type="text" onclick="selectDwxxbTree()" name="pqry" th:field="*{pqry}" id="treeName" readonly="true" ><!--pqry,pqry-->
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">联系电话：</label>
+                <div class="col-sm-8">
+                    <input name="lxdh" th:field="*{lxdh}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/pdjlxx";
+        $("#form-pdjlxx-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-pdjlxx-edit').serialize());
+            }
+        }
+
+        $("input[name='pqsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='tbsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        /*单位管理-新增-选择父单位管理树*/
+        function selectDwxxbTree() {
+            var options = {
+                title: '人员选择',
+                width: "380",
+                url: prefix + "/selectRYbTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = $.modal.getChildFrame(index);
+            if($("#treeId").val()==''){
+                $("#treeId").val(body.find('#treeId').val());
+                $("#treeName").val(body.find('#treeName').val());
+            }else{
+                $("#treeId").val($("#treeId").val()+","+body.find('#treeId').val());
+                $("#treeName").val($("#treeName").val()+","+body.find('#treeName').val());
+            }
+            $.modal.close(index);
+        }
+    </script>
+</body>
+</html>

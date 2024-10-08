@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改基本信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-sbjbxx-edit" th:object="${sbJbxx}">
+            <input name="sid" th:field="*{sid}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">型号品牌：</label>
+                <div class="col-sm-8">
+                    <input name="xhpp" th:field="*{xhpp}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">安装时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="azdate" th:value="${#dates.format(sbJbxx.azdate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">产品id：</label>
+                <div class="col-sm-8">
+                    <input name="cpid" th:field="*{cpid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">责任人：</label>
+                <div class="col-sm-8">
+                    <input name="zrr" th:field="*{zrr}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">联系电话：</label>
+                <div class="col-sm-8">
+                    <input name="iph" th:field="*{iph}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">紧急联系人：</label>
+                <div class="col-sm-8">
+                    <input name="jjlxr" th:field="*{jjlxr}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属单位：</label>
+                <div class="col-sm-8">
+                    <input name="ssdw" th:field="*{ssdw}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">办公室：</label>
+                <div class="col-sm-8">
+                    <input name="bgs" th:field="*{bgs}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">办公室负责人：</label>
+                <div class="col-sm-8">
+                    <input name="bgsry" th:field="*{bgsry}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">负责人电话：</label>
+                <div class="col-sm-8">
+                    <input name="ip2" th:field="*{ip2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">设备类型：</label>
+                <div class="col-sm-8">
+                    <select name="lx" class="form-control m-b" th:with="type=${@dict.getType('sb_lx')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{lx}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/sbjbxx";
+        $("#form-sbjbxx-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-sbjbxx-edit').serialize());
+            }
+        }
+
+        $("input[name='azdate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.XtDwxxbMapper">
+    
+    <resultMap type="XtDwxxb" id="XtDwxxbResult">
+        <result property="sid"    column="sid"    />
+        <result property="dwmc"    column="dwmc"    />
+        <result property="dwdz"    column="dwdz"    />
+        <result property="sjdw"    column="sjdw"    />
+        <result property="tbsj"    column="tbsj"    />
+        <result property="tbr"    column="tbr"    />
+        <result property="wxcs"    column="wxcs"    />
+        <result property="bxcs"    column="bxcs"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu6"    column="yu6"    />
+        <result property="yu7"    column="yu7"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectXtDwxxbVo">
+        select sid, dwmc, dwdz, sjdw, tbsj, tbr, wxcs, bxcs, yu1, yu2, yu3, yu4, yu5, yu6, yu7 from xt_dwxxb
+    </sql>
+
+    <select id="selectXtDwxxbList" parameterType="XtDwxxb" resultMap="XtDwxxbResult">
+        select sid, dwmc, dwdz, sjdw, tbsj, tbr, (select count(1) from yw_sbxx where dwmc=a.sid ) bxcs, yu1, yu2, yu3, yu4, yu5, yu6, yu7 from xt_dwxxb a
+        <where>  
+            <if test="dwmc != null  and dwmc != ''"> and dwmc like concat('%', #{dwmc}, '%')</if>
+            <if test="dwdz != null  and dwdz != ''"> and dwdz = #{dwdz}</if>
+            <if test="sjdw != null "> and sjdw = #{sjdw}</if>
+            <if test="tbsj != null "> and tbsj = #{tbsj}</if>
+            <if test="tbr != null  and tbr != ''"> and tbr = #{tbr}</if>
+            <if test="wxcs != null "> and wxcs = #{wxcs}</if>
+            <if test="bxcs != null "> and bxcs = #{bxcs}</if>
+            <if test="yu1 != null  and yu1 != ''"> and yu1 = #{yu1}</if>
+            <if test="yu2 != null  and yu2 != ''"> and yu2 = #{yu2}</if>
+            <if test="yu3 != null  and yu3 != ''"> and yu3 = #{yu3}</if>
+            <if test="yu4 != null  and yu4 != ''"> and yu4 = #{yu4}</if>
+            <if test="yu5 != null  and yu5 != ''"> and yu5 = #{yu5}</if>
+            <if test="yu6 != null  and yu6 != ''"> and yu6 = #{yu6}</if>
+            <if test="yu7 != null  and yu7 != ''"> and yu7 = #{yu7}</if>
+        </where>
+        order by sjdw,tbsj desc
+    </select>
+    
+    <select id="selectXtDwxxbBySid" parameterType="Long" resultMap="XtDwxxbResult">
+        select t.sid, t.dwmc, t.dwdz, t.sjdw, t.tbsj, t.tbr, t.wxcs, t.bxcs, t.yu1, t.yu2, t.yu3, t.yu4, t.yu5, t.yu6, t.yu7, p.dwmc as parent_name
+        from xt_dwxxb t
+        left join xt_dwxxb p on p.sid = t.sjdw
+        where t.sid = #{sid}
+    </select>
+
+    <select id="finddwxx" parameterType="Long" resultMap="XtDwxxbResult">
+       select c.* from yw_sbxx a inner join  yw_wxjl b  on a.sid=b.yu1  inner join xt_dwxxb c on a.dwmc=c.sid
+        where b.sid = #{sid}
+    </select>
+        
+    <insert id="insertXtDwxxb" parameterType="XtDwxxb">
+        insert into xt_dwxxb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="dwmc != null">dwmc,</if>
+            <if test="dwdz != null">dwdz,</if>
+            <if test="sjdw != null">sjdw,</if>
+            <if test="tbsj != null">tbsj,</if>
+            <if test="tbr != null">tbr,</if>
+            <if test="wxcs != null">wxcs,</if>
+            <if test="bxcs != null">bxcs,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu6 != null">yu6,</if>
+            <if test="yu7 != null">yu7,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="dwmc != null">#{dwmc},</if>
+            <if test="dwdz != null">#{dwdz},</if>
+            <if test="sjdw != null">#{sjdw},</if>
+            <if test="tbsj != null">#{tbsj},</if>
+            <if test="tbr != null">#{tbr},</if>
+            <if test="wxcs != null">#{wxcs},</if>
+            <if test="bxcs != null">#{bxcs},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu6 != null">#{yu6},</if>
+            <if test="yu7 != null">#{yu7},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtDwxxb" parameterType="XtDwxxb">
+        update xt_dwxxb
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dwmc != null">dwmc = #{dwmc},</if>
+            <if test="dwdz != null">dwdz = #{dwdz},</if>
+            <if test="sjdw != null">sjdw = #{sjdw},</if>
+            <if test="tbsj != null">tbsj = #{tbsj},</if>
+            <if test="tbr != null">tbr = #{tbr},</if>
+            <if test="wxcs != null">wxcs = #{wxcs},</if>
+            <if test="bxcs != null">bxcs = #{bxcs},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu6 != null">yu6 = #{yu6},</if>
+            <if test="yu7 != null">yu7 = #{yu7},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteXtDwxxbBySid" parameterType="Long">
+        delete from xt_dwxxb where sid = #{sid}
+    </delete>
+
+    <delete id="deleteXtDwxxbBySids" parameterType="String">
+        delete from xt_dwxxb where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+
+    <select id="selectRYbTree"  resultMap="XtDwxxbResult">
+       select sid, dwmc, sjdw from (select user_id as sid,dept_id as sjdw,user_name as dwmc from sys_user union all
+       select dept_id AS sid,parent_id AS sjdw,dept_name AS dwmc from sys_dept) b order by sid asc
+    </select>
+
+    <select id="selectUser"  resultMap="XtDwxxbResult">
+      select user_name as yu1,phonenumber as dwmc from sys_user where dept_id='103' order by user_id
+    </select>
+
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SbJbxxMapper">
+    
+    <resultMap type="SbJbxx" id="SbJbxxResult">
+        <result property="sid"    column="sid"    />
+        <result property="xhpp"    column="xhpp"    />
+        <result property="azdate"    column="azdate"    />
+        <result property="cpid"    column="cpid"    />
+        <result property="zrr"    column="zrr"    />
+        <result property="iph"    column="iph"    />
+        <result property="jjlxr"    column="jjlxr"    />
+        <result property="ssdw"    column="ssdw"    />
+        <result property="bgs"    column="bgs"    />
+        <result property="bgsry"    column="bgsry"    />
+        <result property="ip2"    column="ip2"    />
+        <result property="lx"    column="lx"    />
+        <result property="userid"    column="userid"    />
+    </resultMap>
+
+    <sql id="selectSbJbxxVo">
+        select sid, xhpp, azdate, cpid, zrr, iph, jjlxr, ssdw, bgs, bgsry, ip2, lx,userid from sb_jbxx
+    </sql>
+
+    <select id="selectSbJbxxList" parameterType="SbJbxx" resultMap="SbJbxxResult">
+        <include refid="selectSbJbxxVo"/>
+        <where>  
+            <if test="xhpp != null  and xhpp != ''"> and xhpp = #{xhpp}</if>
+            <if test="azdate != null "> and azdate = #{azdate}</if>
+            <if test="cpid != null  and cpid != ''"> and cpid = #{cpid}</if>
+            <if test="zrr != null  and zrr != ''"> and zrr = #{zrr}</if>
+            <if test="iph != null  and iph != ''"> and iph = #{iph}</if>
+            <if test="jjlxr != null  and jjlxr != ''"> and jjlxr = #{jjlxr}</if>
+            <if test="ssdw != null  and ssdw != ''"> and ssdw like concat('%', #{ssdw}, '%') </if>
+            <if test="bgs != null  and bgs != ''"> and bgs = #{bgs}</if>
+            <if test="bgsry != null  and bgsry != ''"> and bgsry = #{bgsry}</if>
+            <if test="ip2 != null  and ip2 != ''"> and ip2 = #{ip2}</if>
+            <if test="lx != null  and lx != ''"> and lx = #{lx}</if>
+            <if test="userid != null  and userid != ''"> and userid = #{userid}</if>
+        </where>
+    </select>
+    
+    <select id="selectSbJbxxBySid" parameterType="String" resultMap="SbJbxxResult">
+        <include refid="selectSbJbxxVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertSbJbxx" parameterType="SbJbxx">
+        insert into sb_jbxx
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="xhpp != null">xhpp,</if>
+            <if test="azdate != null">azdate,</if>
+            <if test="cpid != null">cpid,</if>
+            <if test="zrr != null">zrr,</if>
+            <if test="iph != null">iph,</if>
+            <if test="jjlxr != null">jjlxr,</if>
+            <if test="ssdw != null">ssdw,</if>
+            <if test="bgs != null">bgs,</if>
+            <if test="bgsry != null">bgsry,</if>
+            <if test="ip2 != null">ip2,</if>
+            <if test="lx != null">lx,</if>
+            <if test="userid != null">userid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="xhpp != null">#{xhpp},</if>
+            <if test="azdate != null">#{azdate},</if>
+            <if test="cpid != null">#{cpid},</if>
+            <if test="zrr != null">#{zrr},</if>
+            <if test="iph != null">#{iph},</if>
+            <if test="jjlxr != null">#{jjlxr},</if>
+            <if test="ssdw != null">#{ssdw},</if>
+            <if test="bgs != null">#{bgs},</if>
+            <if test="bgsry != null">#{bgsry},</if>
+            <if test="ip2 != null">#{ip2},</if>
+            <if test="lx != null">#{lx},</if>
+            <if test="userid != null">#{userid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSbJbxx" parameterType="SbJbxx">
+        update sb_jbxx
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xhpp != null">xhpp = #{xhpp},</if>
+            <if test="azdate != null">azdate = #{azdate},</if>
+            <if test="cpid != null">cpid = #{cpid},</if>
+            <if test="zrr != null">zrr = #{zrr},</if>
+            <if test="iph != null">iph = #{iph},</if>
+            <if test="jjlxr != null">jjlxr = #{jjlxr},</if>
+            <if test="ssdw != null">ssdw = #{ssdw},</if>
+            <if test="bgs != null">bgs = #{bgs},</if>
+            <if test="bgsry != null">bgsry = #{bgsry},</if>
+            <if test="ip2 != null">ip2 = #{ip2},</if>
+            <if test="lx != null">lx = #{lx},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteSbJbxxBySid" parameterType="String">
+        delete from sb_jbxx where sid = #{sid}
+    </delete>
+
+    <delete id="deleteSbJbxxBySids" parameterType="String">
+        delete from sb_jbxx where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

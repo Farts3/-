@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('操作记录列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>标题：</label>
+                            <input type="hidden"  th:value="${sbJbxx.sid}" id="sbid" name="sbid" th:field="*{sbJbxx.sid}"/>
+                            <input type="text" name="bt"/>
+                        </li>
+                        <li>
+                            <label>添加时间：</label>
+                            <input type="text" class="time-input" placeholder="请选择添加时间" name="tjdate"/>
+                        </li>
+                        <li>
+                            <label>添加人：</label>
+                            <input type="text" name="uname"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="add()" >
+                <i class="fa fa-plus"></i> 添加
+            </a>
+
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:sbczjl:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:sbczjl:remove')}]];
+    var prefix = ctx + "system/sbczjl";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "操作记录",
+            sortName: "sbid",
+            sortOrder: "asc",
+            queryParams: queryParams,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'sid',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'bt',
+                    title: '标题'
+                },
+                {
+                    field: 'sm',
+                    title: '说明'
+                },
+                {
+                    field: 'tjdate',
+                    title: '添加时间'
+                },
+                {
+                    field: 'uname',
+                    title: '添加人'
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        search.sbid = $("#sbid").val();
+        return search;
+    }
+
+    /*字典数据-新增字典*/
+    function add() {
+        var sbid = $("#sbid").val();
+        $.operate.add(sbid);
+    }
+
+    function resetPre() {
+        $.form.reset();
+        $("#sbid").val($("#sbid").val()).trigger("change");
+    }
+</script>
+</body>
+</html>

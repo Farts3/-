@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增报修单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-bxdxx-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修单位：</label>
+                <div class="col-sm-8">
+                    <input name="bxDw" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修部门：</label>
+                <div class="col-sm-8">
+                    <input name="bxBm" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障类型：</label>
+                <div class="col-sm-8">
+                    <input name="bxLx" class="form-control" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">故障问题：</label>
+                <div class="col-sm-8">
+                    <input name="bxWt" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修姓名：</label>
+                <div class="col-sm-8">
+                    <input name="bxXm" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报修电话：</label>
+                <div class="col-sm-8">
+                    <input name="yu1" th:field="*{yu1}"  class="form-control" type="hidden">
+                    <input name="yu2" th:field="*{yu2}"  class="form-control" type="hidden">
+                    <input name="bxDh" class="form-control" type="text">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/bxdxx"
+        $("#form-bxdxx-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-bxdxx-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

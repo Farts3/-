@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" >
+<head>
+    <th:block th:include="include :: header('基本信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-sbjbxx-edit" th:object="${sbJbxx}">
+        <input name="sid" th:field="*{sid}" id="sid" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">型号品牌：</label>
+                <label class="col-sm-3" th:field="*{xhpp}" th:text="${sbJbxx.xhpp}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">安装时间：</label>
+            <label th:field="*{azdate}" th:text="${#dates.format(sbJbxx.azdate, 'yyyy-MM-dd')}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">产品id：</label>
+            <label th:field="*{cpid}" th:text="${sbJbxx.cpid}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任人：</label>
+            <label th:field="*{zrr}" th:text="${sbJbxx.zrr}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话：</label>
+            <label th:field="*{iph}" th:text="${sbJbxx.iph}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">紧急联系人：</label>
+            <label th:field="*{jjlxr}" th:text="${sbJbxx.jjlxr}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属单位：</label>
+            <label th:field="*{ssdw}" th:text="${sbJbxx.ssdw}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">办公室：</label>
+            <label th:field="*{bgs}" th:text="${sbJbxx.bgs}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">办公室负责人：</label>
+            <label th:field="*{bgsry}" th:text="${sbJbxx.bgsry}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">负责人电话：</label>
+            <label th:field="*{ip2}" th:text="${sbJbxx.ip2}" ></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">设备类型：</label>
+            <label th:field="*{lx}" th:text="${sbJbxx.lx}" ></label>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success btn-block" onclick="denglu()" >登录</button>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/sbjbxx";
+    $("#form-sbjbxx-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-sbjbxx-edit').serialize());
+        }
+    }
+
+    function denglu(){
+        var sid=$("#sid").val();
+        window.open(prefix+"/denglu/"+sid)
+    }
+
+    $("input[name='azdate']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+</script>
+</body>
+</html>

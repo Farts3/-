@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.YwSbxxMapper">
+    
+    <resultMap type="YwSbxx" id="YwSbxxResult">
+        <result property="sid"    column="sid"    />
+        <result property="dwmc"    column="dwmc"    />
+        <result property="sbnc"    column="sbnc"    />
+        <result property="sblx"    column="sblx"    />
+        <result property="sbxh"    column="sbxh"    />
+        <result property="xlh"    column="xlh"    />
+        <result property="rjmc"    column="rjmc"    />
+        <result property="jhm"    column="jhm"    />
+        <result property="shsj"    column="shsj"    />
+        <result property="mj"    column="mj"    />
+        <result property="cgsj"    column="cgsj"    />
+        <result property="gbsj"    column="gbsj"    />
+        <result property="dz"    column="dz"    />
+        <result property="bc"    column="bc"    />
+        <result property="lxr"    column="lxr"    />
+        <result property="lxdh"    column="lxdh"    />
+        <result property="bxcs"    column="bxcs"    />
+        <result property="wxcs"    column="wxcs"    />
+        <result property="tbsj"    column="tbsj"    />
+        <result property="tbr"    column="tbr"    />
+        <result property="yu1"    column="yu1"    />
+        <result property="yu2"    column="yu2"    />
+        <result property="yu3"    column="yu3"    />
+        <result property="yu4"    column="yu4"    />
+        <result property="yu5"    column="yu5"    />
+        <result property="yu6"    column="yu6"    />
+        <result property="yu7"    column="yu7"    />
+        <result property="yu8"    column="yu8"    />
+    </resultMap>
+
+    <sql id="selectYwSbxxVo">
+        select sid, dwmc, sbnc, sblx, sbxh, xlh, rjmc, jhm, shsj, mj, cgsj, gbsj, dz, bc, lxr, lxdh, bxcs, wxcs, tbsj, tbr, yu1, yu2, yu3, yu4, yu5, yu6, yu7, yu8 from yw_sbxx
+    </sql>
+
+    <select id="selectYwSbxxList" parameterType="YwSbxx" resultMap="YwSbxxResult">
+        select a.sid, b.dwmc, sbnc, sblx, sbxh, xlh, rjmc, jhm, shsj, mj, cgsj, gbsj, (select count(1) from yw_wxjl c  where c.yu1=a.sid ) wxcs,
+        a.tbsj, a.tbr from yw_sbxx a inner join  xt_dwxxb b on a.dwmc=b.sid
+        <where>
+            <if test="dwmc != null  and dwmc != ''"> and a.dwmc =#{dwmc}</if>
+            <if test="sbnc != null  and sbnc != ''"> and sbnc like concat('%', #{sbnc}, '%')</if>
+            <if test="sblx != null  and sblx != ''"> and sblx like concat('%', #{sblx}, '%')</if>
+            <if test="sbxh != null  and sbxh != ''"> and sbxh like concat('%', #{sbxh}, '%')</if>
+            <if test="xlh != null  and xlh != ''"> and xlh like concat('%', #{xlh}, '%')</if>
+            <if test="rjmc != null  and rjmc != ''"> and rjmc = #{rjmc}</if>
+            <if test="jhm != null  and jhm != ''"> and jhm = #{jhm}</if>
+            <if test="shsj != null "> and shsj = #{shsj}</if>
+            <if test="mj != null  and mj != ''"> and b.dwmc like concat('%', #{mj}, '%')</if>
+            <if test="cgsj != null "> and cgsj = #{cgsj}</if>
+            <if test="gbsj != null "> and gbsj = #{gbsj}</if>
+            <if test="tbr != null  and tbr != ''"> and tbr = #{tbr}</if>
+        </where> order by tbsj desc
+    </select>
+    
+    <select id="selectYwSbxxBySid" parameterType="String" resultMap="YwSbxxResult">
+        <include refid="selectYwSbxxVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertYwSbxx" parameterType="YwSbxx">
+        insert into yw_sbxx
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="dwmc != null">dwmc,</if>
+            <if test="sbnc != null">sbnc,</if>
+            <if test="sblx != null">sblx,</if>
+            <if test="sbxh != null">sbxh,</if>
+            <if test="xlh != null">xlh,</if>
+            <if test="rjmc != null">rjmc,</if>
+            <if test="jhm != null">jhm,</if>
+            <if test="shsj != null">shsj,</if>
+            <if test="mj != null">mj,</if>
+            <if test="cgsj != null">cgsj,</if>
+            <if test="gbsj != null">gbsj,</if>
+            <if test="dz != null">dz,</if>
+            <if test="bc != null">bc,</if>
+            <if test="lxr != null">lxr,</if>
+            <if test="lxdh != null">lxdh,</if>
+            <if test="bxcs != null">bxcs,</if>
+            <if test="wxcs != null">wxcs,</if>
+            <if test="tbsj != null">tbsj,</if>
+            <if test="tbr != null">tbr,</if>
+            <if test="yu1 != null">yu1,</if>
+            <if test="yu2 != null">yu2,</if>
+            <if test="yu3 != null">yu3,</if>
+            <if test="yu4 != null">yu4,</if>
+            <if test="yu5 != null">yu5,</if>
+            <if test="yu6 != null">yu6,</if>
+            <if test="yu7 != null">yu7,</if>
+            <if test="yu8 != null">yu8,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="dwmc != null">#{dwmc},</if>
+            <if test="sbnc != null">#{sbnc},</if>
+            <if test="sblx != null">#{sblx},</if>
+            <if test="sbxh != null">#{sbxh},</if>
+            <if test="xlh != null">#{xlh},</if>
+            <if test="rjmc != null">#{rjmc},</if>
+            <if test="jhm != null">#{jhm},</if>
+            <if test="shsj != null">#{shsj},</if>
+            <if test="mj != null">#{mj},</if>
+            <if test="cgsj != null">#{cgsj},</if>
+            <if test="gbsj != null">#{gbsj},</if>
+            <if test="dz != null">#{dz},</if>
+            <if test="bc != null">#{bc},</if>
+            <if test="lxr != null">#{lxr},</if>
+            <if test="lxdh != null">#{lxdh},</if>
+            <if test="bxcs != null">#{bxcs},</if>
+            <if test="wxcs != null">#{wxcs},</if>
+            <if test="tbsj != null">#{tbsj},</if>
+            <if test="tbr != null">#{tbr},</if>
+            <if test="yu1 != null">#{yu1},</if>
+            <if test="yu2 != null">#{yu2},</if>
+            <if test="yu3 != null">#{yu3},</if>
+            <if test="yu4 != null">#{yu4},</if>
+            <if test="yu5 != null">#{yu5},</if>
+            <if test="yu6 != null">#{yu6},</if>
+            <if test="yu7 != null">#{yu7},</if>
+            <if test="yu8 != null">#{yu8},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwSbxx" parameterType="YwSbxx">
+        update yw_sbxx
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dwmc != null">dwmc = #{dwmc},</if>
+            <if test="sbnc != null">sbnc = #{sbnc},</if>
+            <if test="sblx != null">sblx = #{sblx},</if>
+            <if test="sbxh != null">sbxh = #{sbxh},</if>
+            <if test="xlh != null">xlh = #{xlh},</if>
+            <if test="rjmc != null">rjmc = #{rjmc},</if>
+            <if test="jhm != null">jhm = #{jhm},</if>
+            <if test="shsj != null">shsj = #{shsj},</if>
+            <if test="mj != null">mj = #{mj},</if>
+            <if test="cgsj != null">cgsj = #{cgsj},</if>
+            <if test="gbsj != null">gbsj = #{gbsj},</if>
+            <if test="dz != null">dz = #{dz},</if>
+            <if test="bc != null">bc = #{bc},</if>
+            <if test="lxr != null">lxr = #{lxr},</if>
+            <if test="lxdh != null">lxdh = #{lxdh},</if>
+            <if test="bxcs != null">bxcs = #{bxcs},</if>
+            <if test="wxcs != null">wxcs = #{wxcs},</if>
+            <if test="tbsj != null">tbsj = #{tbsj},</if>
+            <if test="tbr != null">tbr = #{tbr},</if>
+            <if test="yu1 != null">yu1 = #{yu1},</if>
+            <if test="yu2 != null">yu2 = #{yu2},</if>
+            <if test="yu3 != null">yu3 = #{yu3},</if>
+            <if test="yu4 != null">yu4 = #{yu4},</if>
+            <if test="yu5 != null">yu5 = #{yu5},</if>
+            <if test="yu6 != null">yu6 = #{yu6},</if>
+            <if test="yu7 != null">yu7 = #{yu7},</if>
+            <if test="yu8 != null">yu8 = #{yu8},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteYwSbxxBySid" parameterType="String">
+        delete from yw_sbxx where sid = #{sid}
+    </delete>
+
+    <delete id="deleteYwSbxxBySids" parameterType="String">
+        delete from yw_sbxx where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

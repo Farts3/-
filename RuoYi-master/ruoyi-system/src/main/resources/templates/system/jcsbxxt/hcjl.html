@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('维修单列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>维修问题：</label>
+                            <input type="hidden"  th:value="${ywSbxx.yu3}" id="yu1" name="yu1" th:field="*{ywSbxx.yu3}"/>
+                            <input type="text" name="wxwt"/>
+                        </li>
+                        <li>
+                            <label>处理状态：</label>
+                            <input type="text" name="clzt"/>
+                        </li>
+                        <li>
+                            <label>维修时间：</label>
+                            <input type="text" class="time-input" placeholder="请选择维修时间" name="wxsj"/>
+                        </li>
+                        <li>
+                            <label>维修人员：</label>
+                            <input type="text" name="wxry"/>
+                            <input type="hidden" name="yu2" value="是"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" >
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:wxdgl:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:wxdgl:remove')}]];
+    var prefix = ctx + "system/wxdgl";
+
+    $(function() {
+        var options = {
+            url: prefix + "/listhc",
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "维修单",
+            queryParams: queryParams,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'sid',
+                    title: 'sid',
+                    visible: false
+                },
+                {
+                    field: 'yu2',
+                    title: '耗材类型'
+                },
+                {
+                    field: 'yu3',
+                    title: '类型编码'
+                },
+                {
+                    field: 'yu4',
+                    title: '耗材名称'
+                },
+                {
+                    field: 'yu5',
+                    title: '型号'
+                },
+                {
+                    field: 'yu6',
+                    title: '价格'
+                }]
+        };
+        $.table.init(options);
+    });
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        search.yu1 = $("#yu1").val();
+        return search;
+    }
+
+    /*字典数据-新增字典*/
+    function add() {
+        var yu1 = $("#yu1").val();
+        $.operate.add(yu1);
+    }
+
+    function resetPre() {
+        $.form.reset();
+        $("#yu1").val($("#yu1").val()).trigger("change");
+    }
+</script>
+</body>
+</html>

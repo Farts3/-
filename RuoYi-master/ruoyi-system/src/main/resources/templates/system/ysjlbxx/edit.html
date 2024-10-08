@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改验收记录')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-ysjlbxx-edit" th:object="${ywYsjlb}">
+        <input name="sid" th:field="*{sid}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否通过验收：</label>
+            <div class="col-sm-8">
+                <select name="ifys" class="form-control m-b" th:with="type=${@dict.getType('xl_ifsb')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{ifys}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">验收人：</label>
+            <div class="col-sm-8">
+                <input name="wxid" th:field="*{wxid}" class="form-control" type="hidden">
+                <input name="ysr" th:field="*{ysr}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">验收时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <input name="yssj" th:value="${#dates.format(ywYsjlb.yssj, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话：</label>
+            <div class="col-sm-8">
+                <input name="lxdh" th:field="*{lxdh}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否退回耗材：</label>
+            <div class="col-sm-8">
+                <select name="yu1" class="form-control m-b" th:with="type=${@dict.getType('xl_ifsb')}" onchange="IsYhx(this)">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{yu1}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" id="element">
+            <label class="col-sm-3 control-label">耗材是否完整：</label>
+            <div class="col-sm-8">
+                <select name="yu2" class="form-control m-b" th:with="type=${@dict.getType('xl_ifsb')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{yu2}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <textarea name="yu3" th:field="*{yu3}" class="form-control" type="text">
+
+                </textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/ysjlbxx";
+    $("#form-ysjlbxx-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.modal.close();
+        }
+    }
+
+    $("input[name='yssj']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='tbsj']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+</script>
+</body>
+</html>

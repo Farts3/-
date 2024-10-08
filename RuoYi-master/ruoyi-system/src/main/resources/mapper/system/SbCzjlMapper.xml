@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SbCzjlMapper">
+    
+    <resultMap type="SbCzjl" id="SbCzjlResult">
+        <result property="sid"    column="sid"    />
+        <result property="bt"    column="bt"    />
+        <result property="sm"    column="sm"    />
+        <result property="tjdate"    column="tjdate"    />
+        <result property="uname"    column="uname"    />
+        <result property="fj"    column="fj"    />
+        <result property="sbid"    column="sbid"    />
+        <result property="userid"    column="userid"    />
+        <result property="lrsj"    column="lrsj"    />
+    </resultMap>
+
+    <sql id="selectSbCzjlVo">
+        select sid, bt, sm, tjdate, uname, fj, sbid,userid,lrsj from sb_czjl
+    </sql>
+
+    <select id="selectSbCzjlList" parameterType="SbCzjl" resultMap="SbCzjlResult">
+        <include refid="selectSbCzjlVo"/>
+        <where>  
+            <if test="bt != null  and bt != ''"> and bt = #{bt}</if>
+            <if test="sm != null  and sm != ''"> and sm = #{sm}</if>
+            <if test="tjdate != null "> and tjdate = #{tjdate}</if>
+            <if test="uname != null  and uname != ''"> and uname like concat('%', #{uname}, '%')</if>
+            <if test="fj != null  and fj != ''"> and fj = #{fj}</if>
+            <if test="sbid != null  and sbid != ''"> and sbid = #{sbid}</if>
+            <if test="userid != null  and userid != ''"> and userid = #{userid}</if>
+        </where>
+    </select>
+    
+    <select id="selectSbCzjlBySid" parameterType="String" resultMap="SbCzjlResult">
+        <include refid="selectSbCzjlVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertSbCzjl" parameterType="SbCzjl">
+        insert into sb_czjl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="bt != null">bt,</if>
+            <if test="sm != null">sm,</if>
+            <if test="tjdate != null">tjdate,</if>
+            <if test="uname != null">uname,</if>
+            <if test="fj != null">fj,</if>
+            <if test="sbid != null">sbid,</if>
+            <if test="userid != null">userid,</if>
+            <if test="lrsj != null">lrsj,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="bt != null">#{bt},</if>
+            <if test="sm != null">#{sm},</if>
+            <if test="tjdate != null">#{tjdate},</if>
+            <if test="uname != null">#{uname},</if>
+            <if test="fj != null">#{fj},</if>
+            <if test="sbid != null">#{sbid},</if>
+            <if test="userid != null">#{userid},</if>
+            <if test="lrsj != null">#{lrsj},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSbCzjl" parameterType="SbCzjl">
+        update sb_czjl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bt != null">bt = #{bt},</if>
+            <if test="sm != null">sm = #{sm},</if>
+            <if test="tjdate != null">tjdate = #{tjdate},</if>
+            <if test="uname != null">uname = #{uname},</if>
+            <if test="fj != null">fj = #{fj},</if>
+            <if test="sbid != null">sbid = #{sbid},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteSbCzjlBySid" parameterType="String">
+        delete from sb_czjl where sid = #{sid}
+    </delete>
+
+    <delete id="deleteSbCzjlBySids" parameterType="String">
+        delete from sb_czjl where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改设备管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-jcsbxxt-edit" th:object="${ywSbxx}">
+            <input name="sid" th:field="*{sid}" type="hidden">
+                    <input name="dwmc" th:field="*{dwmc}"  class="form-control" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">设备名称：</label>
+                <div class="col-sm-9">
+                    <input name="sbnc" th:field="*{sbnc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">设备类型：</label>
+                <div class="col-sm-4">
+                    <select name="sblx" class="form-control m-b" th:with="type=${@dict.getType('sb_lx')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label">销售商：</label>
+                <div class="col-sm-4">
+                    <input name="rjmc" th:field="*{rjmc}" class="form-control" type="text">
+                </div>
+            </div>
+
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">销售时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <input name="cgsj" th:value="${#dates.format(ywSbxx.cgsj, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label">过保时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <input name="gbsj" th:value="${#dates.format(ywSbxx.gbsj, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+
+
+                <label class="col-sm-2 control-label is-required">设备型号：</label>
+                <div class="col-sm-4">
+                    <input name="sbxh" class="form-control" type="text" th:field="*{sbxh}">
+                </div>
+
+
+                <label class="col-sm-2 control-label is-required">设备序列号：</label>
+                <div class="col-sm-4">
+                    <input name="xlh" class="form-control" type="text" th:field="*{xlh}">
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">设备激活码：</label>
+                <div class="col-sm-10">
+                    <textarea name="jhm" class="form-control">[[*{jhm}]]</textarea>
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/jcsbxxt";
+        $("#form-jcsbxxt-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-jcsbxxt-edit').serialize());
+            }
+        }
+
+        $("input[name='shsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='cgsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='gbsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='tbsj']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>
