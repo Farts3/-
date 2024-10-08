@@ -11,12 +11,6 @@
 
 ## 平台简介
 
-一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适的。于是利用空闲休息时间开始自己写了一套后台系统。如此有了华钦麒。她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。
-
-性别男，华钦麒是给女儿取的名字（寓意：你若不离不弃，我必生死相依）
-
-华钦麒是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
-
 * 前后端分离版本，请移步[RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
 * 感谢 [hplus](https://gitee.com/hplus_admin/hplus) 后台主题 UI 框架。
 * 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
