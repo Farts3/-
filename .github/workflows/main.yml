@@ -30,8 +30,8 @@ jobs:
           host: ${{ secrets.ALIYUN_WINDOWS_HOST }}
           username: ${{ secrets.ALIYUN_WINDOWS_USERNAME }}
           password: ${{ secrets.ALIYUN_WINDOWS_PASSWORD }}
-          port: 3398
+          port: 3389
           script: |
-            scp -P ${{ secrets.ALIYUN_WINDOWS_PORT }} target/ruoyi-admin.jar ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }}:C://xm/
-            ssh ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }} -p ${{ secrets.ALIYUN_WINDOWS_PORT }} "cd C://xm/ && java -jar ruoyi-admin.jar"
+            scp -P 3389 target/ruoyi-admin.jar ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }}:C://xm/
+            ssh ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }} -p 3389 "cd C://xm/ && java -jar ruoyi-admin.jar"
             # Add any additional commands to start or configure the application on the Windows server if needed.
