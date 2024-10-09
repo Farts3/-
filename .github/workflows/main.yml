@@ -19,7 +19,7 @@ jobs:
           java-version: 1.8
 
       - name: Maven Build
-        run: mvn clean package -DskipTests -f ruoyi-master/ruoyi-admin/pom.xml
+        run: mvn clean package -DskipTests -f RuoYi-master/ruoyi-admin/pom.xml
 
       - name: Deploy to Aliyun Windows 2012
         uses: appleboy/ssh-action@master
