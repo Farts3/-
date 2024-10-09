@@ -19,7 +19,7 @@ jobs:
           java-version: 1.8
 
       - name: Maven Build
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -f ruoyi-master/ruoyi-admin/pom.xml
 
       - name: Deploy to Aliyun Windows 2012
         uses: appleboy/ssh-action@master
@@ -29,5 +29,6 @@ jobs:
           password: ${{ secrets.ALIYUN_WINDOWS_PASSWORD }}
           port: ${{ secrets.ALIYUN_WINDOWS_PORT }}
           script: |
-            scp -P ${{ secrets.ALIYUN_WINDOWS_PORT }} target/your-app.jar ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }}:${{ secrets.ALIYUN_WINDOWS_REMOTE_DIR }}
+            scp -P ${{ secrets.ALIYUN_WINDOWS_PORT }} target/ruoyi-admin.jar ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }}:${{ secrets.ALIYUN_WINDOWS_REMOTE_DIR }}
+            ssh ${{ secrets.ALIYUN_WINDOWS_USERNAME }}@${{ secrets.ALIYUN_WINDOWS_HOST }} -p ${{ secrets.ALIYUN_WINDOWS_PORT }} "cd ${{ secrets.ALIYUN_WINDOWS_REMOTE_DIR }} && java -jar ruoyi-admin.jar"
             # Add any additional commands to start or configure the application on the Windows server if needed.
