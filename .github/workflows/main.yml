@@ -19,7 +19,7 @@ jobs:
           java-version: 1.8
 
       - name: Clear Maven Cache
-        run: Remove-Item -Path $HOME/.m2/repository -Recurse -Force
+        run: rm -rf ~/.m2/repository/*
        
       - name: Maven Build
         run: mvn clean package -DskipTests -f RuoYi-master/pom.xml
