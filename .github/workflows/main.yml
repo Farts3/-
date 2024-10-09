@@ -25,7 +25,7 @@ jobs:
         run: mvn clean package -DskipTests -f RuoYi-master/pom.xml
 
       - name: Deploy to Aliyun Windows 2012
-        uses: appleboy/ssh-action@main
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.ALIYUN_WINDOWS_HOST }}
           username: ${{ secrets.ALIYUN_WINDOWS_USERNAME }}
