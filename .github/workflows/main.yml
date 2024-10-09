@@ -22,7 +22,7 @@ jobs:
         run: rm -rf ~/.m2/repository/*
        
       - name: Maven Build
-        run: mvn clean package -DskipTests -f RuoYi-master/ruoyi-admin/pom.xml
+        run: mvn clean package -DskipTests -f RuoYi-master/pom.xml
 
       - name: Deploy to Aliyun Windows 2012
         uses: appleboy/ssh-action@master
